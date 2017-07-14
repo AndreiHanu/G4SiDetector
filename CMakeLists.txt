@@ -38,7 +38,9 @@ add_executable(G4SiDetector G4SiDetector.cc ${sources} ${headers})
 target_link_libraries(G4SiDetector ${Geant4_LIBRARIES})
 
 set(G4SIDETECTOR_SCRIPTS
-    )
+  runGammaISO.mac
+  runGammaISO_loop.mac
+)
 
 foreach(_script ${G4SIDETECTOR_SCRIPTS})
   configure_file(

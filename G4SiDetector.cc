@@ -28,7 +28,7 @@
 //
 // Description: Main Geant4 simulation program for the Silicon detector
 // used by McMaster University to perform dosimetry measurements for the
-// lens of the ye.
+// lens of the eye.
 // ********************************************************************
 
 #ifdef G4MULTITHREADED
@@ -39,17 +39,12 @@
 
 #include "G4UImanager.hh"
 #include "Randomize.hh"
-#include "G4ScoringManager.hh"
 
 // Simulation Files
 #include "DetectorConstruction.hh"
-#include "PrimaryGeneratorAction.hh"
-#include "RunAction.hh"
-#include "EventAction.hh"
-#include "PhysicsList.hh"
+//#include "PhysicsList.hh"
+#include "ActionInitialization.hh"
 
-// Biasing Files
-#include "G4GenericBiasingPhysics.hh"
 #include "FTFP_BERT.hh"
 
 #ifdef G4VIS_USE
@@ -67,27 +62,27 @@ int main(int argc,char** argv)
 	// Choose the Random engine
   	G4Random::setTheEngine(new CLHEP::RanecuEngine);
      
-  	// Construct the default run manager
-  	G4RunManager* runManager = new G4RunManager;
+  	// Construct the default run manager	
+	#ifdef G4MULTITHREADED
+		G4cout << "Simulation is running on " << G4Threading::G4GetNumberOfCores() << " threads";
+        G4MTRunManager* runManager = new G4MTRunManager;
+        G4int nCores = G4Threading::G4GetNumberOfCores();
+        runManager->SetNumberOfThreads(nCores);
+	#else
+  		G4RunManager* runManager = new G4RunManager;
+	#endif
 	
-	// Physics list
-  	PhysicsList* physicsList = new PhysicsList();
-	runManager->SetUserInitialization(physicsList);
-
-  	// Set mandatory initialization classes
+	// Set mandatory initialization classes
   	DetectorConstruction* detector = new DetectorConstruction();
   	runManager->SetUserInitialization(detector);
-  	
-  	// Primary Generator Action
-	PrimaryGeneratorAction* primary = new PrimaryGeneratorAction();
-	runManager->SetUserAction(primary);
-	
-	// Run Action
-	RunAction* runAction = new RunAction(primary);
-	runManager->SetUserAction(runAction);
-	
-	// Event Action
-	runManager->SetUserAction(new EventAction(runAction));
+	  
+	// Select a physics list
+	// PhysicsList* physicsList = new PhysicsList();
+	FTFP_BERT* physicsList = new FTFP_BERT();
+  	runManager->SetUserInitialization(physicsList);
+
+	// Set user action classes
+	runManager->SetUserInitialization(new ActionInitialization(detector)); 
   
   	// Initialize G4 kernel
   	runManager->Initialize();
