@@ -33,7 +33,7 @@ detector(det), particleGun(primary)
   	// The choice of analysis technology is done via selection of an appropriate namespace
   	// (g4root, g4xml, or g4csv)
   	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance(); 
-  	G4cout << "Using " << analysisManager->GetType() << G4endl; 
+  	//G4cout << "Using " << analysisManager->GetType() << G4endl; 
   	
 	// Default settings 
   	analysisManager->SetVerboseLevel(0); 
