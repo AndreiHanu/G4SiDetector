@@ -42,10 +42,8 @@
 
 // Simulation Files
 #include "DetectorConstruction.hh"
-//#include "PhysicsList.hh"
+#include "PhysicsList.hh"
 #include "ActionInitialization.hh"
-
-#include "FTFP_BERT.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -77,8 +75,7 @@ int main(int argc,char** argv)
   	runManager->SetUserInitialization(detector);
 	  
 	// Select a physics list
-	// PhysicsList* physicsList = new PhysicsList();
-	FTFP_BERT* physicsList = new FTFP_BERT();
+	PhysicsList* physicsList = new PhysicsList();
   	runManager->SetUserInitialization(physicsList);
 
 	// Set user action classes

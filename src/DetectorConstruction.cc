@@ -176,7 +176,7 @@ void DetectorConstruction::DefineMaterials()
 	fMatBNCIns = Ceramic;
   	
   	// Print materials
-	G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+	//G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 
 }
 
@@ -335,6 +335,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 							false,							// Unused boolean parameter
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
+
+	// Create a region for the Si chip so we can apply the PAI model to it
+	G4Region* regSiChip = new G4Region("Region_Si_Chip");
+  	SiChipLogical->SetRegion(regSiChip);
+	regSiChip->AddRootLogicalVolume(SiChipLogical);
 
 	////////////////////////////////////////////////////////////////////////
 	// Construct the elastomer pad on the back of the Si chip

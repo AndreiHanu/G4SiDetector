@@ -27,6 +27,6 @@
 # different particle energies
 #
 
-/control/alias N_R 1000000
+/control/alias N_R 1000000000
 /control/loop runGammaISO.mac Ekin 1000 1000
 /control/loop runGammaISO.mac Ekin 2000 2000
