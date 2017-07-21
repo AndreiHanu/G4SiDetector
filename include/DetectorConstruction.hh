@@ -61,6 +61,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         G4LogicalVolume* RCLogical;
         G4LogicalVolume* RILogical; 
         G4LogicalVolume* BNCInsLogical;
+        //G4LogicalVolume* SourceLogical;
     
         // Physical Volumes
         G4VPhysicalVolume* WorldPhysical;
@@ -73,6 +74,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         G4VPhysicalVolume* RCPhysical;
         G4VPhysicalVolume* RIPhysical;
         G4VPhysicalVolume* BNCInsPhysical;
+        //G4VPhysicalVolume* SourcePhysical;
     
         // Geometry Parameters
         G4double HOUSING_OD;

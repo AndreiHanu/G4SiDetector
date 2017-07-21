@@ -63,6 +63,7 @@
 // Primitive geometry types
 #include "G4Box.hh"
 #include "G4Tubs.hh"
+#include "G4Sphere.hh"
 
 // Boolean operations on volumes
 #include "G4UnionSolid.hh"
@@ -192,7 +193,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct The World Volume
 
-	G4double world_X = 6*cm;
+	G4double world_X = 6.5*cm;
 	G4double world_Y = world_X;
 	G4double world_Z = world_X;
 	
@@ -414,6 +415,27 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
 
+	/*
+	////////////////////////////////////////////////////////////////////////
+	// Construct the Source sphere for testing
+	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., (6.*cm)/2, 0., 360.0*degree, 0., 180.0*degree);
+
+	SourceLogical = 
+		new G4LogicalVolume(SourceSolid,						// The Solid
+							fMatWorld,		    				// Material
+							"SourceLogical");	     			// Name
+
+	SourcePhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,0),
+							SourceLogical,					// Logical volume
+							"SourcePhysical",				// Name
+							WorldLogical,					// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+	*/
+
 	////////////////////////////////////////////////////////////////////////
   	// Visualisation attributes
   	
@@ -466,6 +488,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4VisAttributes* Vis_BNCIns = new G4VisAttributes(G4Colour(0.3,0.3,0.,.5));
     Vis_BNCIns->SetForceWireframe(false);
     BNCInsLogical->SetVisAttributes(Vis_BNCIns);
+
+	/*
+	// Source Volume (Light Yellow)
+    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,.2));
+    Vis_Source->SetForceWireframe(true);
+    SourceLogical->SetVisAttributes(Vis_Source);
+	*/
 
 	////////////////////////////////////////////////////////////////////////
 	// Return world volume
