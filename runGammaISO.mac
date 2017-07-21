@@ -14,7 +14,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius 7.75 cm
+/gps/pos/radius 3.0 cm
 
 ##########################################################################################
 # Use the cosine angular distribution

@@ -11,7 +11,7 @@
 
 # Specify style (surface, wireframe, auxiliary edges,...)
 /vis/viewer/set/style s
-/vis/viewer/set/auxiliaryEdge true
+/vis/viewer/set/auxiliaryEdge false
 /vis/viewer/set/lineSegmentsPerCircle 100
 
 # Draw smooth trajectories at end of event, showing trajectory points

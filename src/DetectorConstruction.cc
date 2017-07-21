@@ -33,8 +33,6 @@
 // NOTE1: McMaster is actually using the ORTEC CR-020-450-500 detector
 // but the two models are essentially identical in terms of response.
 //
-// NOTE2: The BNC/Microdot connector on the back of the housing has not
-// been included as part of this simulation.
 // ********************************************************************
 
 #include "DetectorConstruction.hh"
@@ -68,6 +66,7 @@
 
 // Boolean operations on volumes
 #include "G4UnionSolid.hh"
+#include "G4SubtractionSolid.hh"
 
 // Regions
 #include "G4Region.hh"
@@ -97,7 +96,40 @@ WorldPhysical(0)
     HOUSING_FRONT_OD = 23.9*mm;             // Housing front opening outer diameter
     HOUSING_BACK_T = 4.0*mm;                // Housing back cover thickness
     HOUSING_SIDE_T = 1.0*mm;                // Housing side thickness
-		
+
+	// Elastomer Ring
+	ELAST_RING_ID = HOUSING_FRONT_OD;		// Inner diameter
+	ELAST_RING_OD = ELAST_RING_ID + 2*0.5*mm;
+	ELAST_RING_H = 0.5*mm;					// Thickness
+
+	// LBI
+	LBI_T = 0.3*mm;							// Thickness
+	LBI_H = 2.0*mm;							// Height
+
+	// Silicon Chip
+	SiChip_OD = 28.*mm;						// Silicon chip outer diameter
+	SiChip_H = 500.*um;						// Silicon chip thickness in microns
+
+	// Elastomer on the back of the Silicon chip
+	ELAST_OD = ELAST_RING_OD;				
+	ELAST_H = 0.5*mm;
+
+	// Brass contact on the back of the elastomer
+	RC_OD = 26.*mm;
+	RC_H = 1.*mm;
+
+	// RI 
+	RI_OD = RC_OD;
+	RI_ID = 4.*mm;
+	RI_H = 4.*mm;
+
+	// BNC Connector
+	BNC_OD = 7.*mm;
+	BNC_H = 7.*mm;
+
+	// BNC Insulator (Ceramic)
+	BNC_INS_OD = 6.25*mm;
+
 	// Rotation Angle
 	rotX = 0.0*deg;		
 			 
@@ -123,18 +155,24 @@ void DetectorConstruction::DefineMaterials()
 	nistManager->SetVerbose(0);
 
   	// NIST materials
-  	G4Material* galactic = nistManager->FindOrBuildMaterial("G4_Galactic");
+  	//G4Material* galactic = nistManager->FindOrBuildMaterial("G4_Galactic");
+	G4Material* Air = nistManager->FindOrBuildMaterial("G4_AIR");
+	G4Material* Si = nistManager->FindOrBuildMaterial("G4_Si");
     G4Material* Stainless_Steel = nistManager->FindOrBuildMaterial("G4_STAINLESS-STEEL");
     G4Material* Brass = nistManager->FindOrBuildMaterial("G4_BRASS");
+	G4Material* Polyethylene = nistManager->FindOrBuildMaterial("G4_POLYETHYLENE");
+	G4Material* Ceramic = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
 	  
   	// Set the materials for the Geometry
-  	fMatWorld = galactic;
+  	fMatWorld = Air;
     fMatHousing = Stainless_Steel;
-    //fMatChip = ;
-    //fMatElastomer = ;
-    //fMatLBI = ;
+	fMatInnerHousing = Air;
+    fMatSiChip = Si;
+    fMatElastomer = Polyethylene;
+    fMatLBI = Polyethylene;
     fMatRC = Brass;
-    //fMatRI = ;
+    fMatRI = Polyethylene;
+	fMatBNCIns = Ceramic;
   	
   	// Print materials
 	G4cout << *(G4Material::GetMaterialTable()) << G4endl;
@@ -178,7 +216,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct the detector housing	
 	
-	G4VSolid* Housing_Solid = new G4Tubs("Housing_Solid", 0., HOUSING_OD/2, HOUSING_H/2, 0., 360.*deg);
+	G4VSolid* Housing_Cyl = new G4Tubs("Housing_Cyl", 0., HOUSING_OD/2, HOUSING_H/2, 0., 360.*deg);
+	G4VSolid* BNC_Cyl = new G4Tubs("BNC_Cyl", 0., BNC_OD/2, BNC_H/2, 0., 360.*deg);
+
+	// Make the inner housing solid through unions
+	G4VSolid* Housing_Solid = new G4UnionSolid("HousingSolid", Housing_Cyl, BNC_Cyl, 0, G4ThreeVector(0,0,-HOUSING_H/2 - BNC_H/2));	
 	
 	HousingLogical = 
 		new G4LogicalVolume(Housing_Solid,					// The Solid
@@ -206,6 +248,173 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 							fCheckOverlaps);				// Overlap Check
 	
 	////////////////////////////////////////////////////////////////////////
+	// Construct the inner detector housing (i.e. the air gap)
+
+	G4VSolid* IH_Cyl1 = new G4Tubs("IH_Cyl1", 0., HOUSING_OD/2 - HOUSING_SIDE_T, (HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2, 0., 360.*deg);
+	G4VSolid* IH_Cyl2 = new G4Tubs("IH_Cyl2", 0., HOUSING_FRONT_OD/2, HOUSING_FRONT_T/2, 0., 360.*deg);
+	G4VSolid* IH_Cyl3 = new G4Tubs("IH_Cyl3", 0., BNC_INS_OD/2, (BNC_H + HOUSING_BACK_T)/2 + 0.01*mm, 0., 360.*deg);
+	
+	// Make the inner housing solid through unions
+	G4VSolid* InnerHousingSolid = new G4UnionSolid("PV_Solid", IH_Cyl1, IH_Cyl2, 0, G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 + HOUSING_FRONT_T/2));	
+	InnerHousingSolid = new G4UnionSolid("PV_Solid", InnerHousingSolid, IH_Cyl3, 0, G4ThreeVector(0,0,-(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - (BNC_H + HOUSING_BACK_T)/2 + 0.01*mm));
+
+	InnerHousingLogical = 
+		new G4LogicalVolume(InnerHousingSolid,				// The Solid
+							fMatInnerHousing,    			// Material
+							"InnerHousingLogical");     	// Name
+
+	InnerHousingPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_BACK_T-HOUSING_FRONT_T)/2),
+							InnerHousingLogical,			// Logical volume
+							"InnerHousingPhysical",			// Name
+							HousingLogical,					// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+	
+	////////////////////////////////////////////////////////////////////////
+	// Construct the elastomer ring (front)
+	G4VSolid* ElastomerRingSolid = new G4Tubs("ElastomerRingSolid", ELAST_RING_ID/2, ELAST_RING_OD/2, ELAST_RING_H/2, 0., 360.*deg);
+
+	ElastomerRingLogical = 
+		new G4LogicalVolume(ElastomerRingSolid,				// The Solid
+							fMatElastomer,    				// Material
+							"ElastomerRingLogical");     	// Name
+
+	ElastomerRingPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - ELAST_RING_H/2),
+							ElastomerRingLogical,			// Logical volume
+							"ElastomerRingPhysical",		// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+
+	
+	////////////////////////////////////////////////////////////////////////
+	// Construct the LBI polymer
+	G4VSolid* LBI_Cyl = new G4Tubs("LBI_Cyl", ELAST_RING_OD/2, HOUSING_OD/2 - HOUSING_SIDE_T, LBI_H/2, 0., 360.*deg);
+	G4VSolid* LBI_Cyl_Inner = new G4Tubs("LBI_Cyl_Inner", 0., HOUSING_OD/2 - HOUSING_SIDE_T - LBI_T, (LBI_H - LBI_T)/2, 0., 360.*deg);
+
+	// Make the LBI solid through a subtraction operation
+	G4VSolid* LBISolid = new G4SubtractionSolid("LBI_Solid", LBI_Cyl, LBI_Cyl_Inner, 0, G4ThreeVector(0,0,-(LBI_T+0.05*mm)/2));	
+
+	LBILogical = 
+		new G4LogicalVolume(LBISolid,						// The Solid
+							fMatLBI,    					// Material
+							"LBILogical");     				// Name
+
+	LBIPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - LBI_H/2),
+							LBILogical,						// Logical volume
+							"LBIPhysical",					// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+	
+	////////////////////////////////////////////////////////////////////////
+	// Construct the silicon chip
+	G4VSolid* SiChipSolid = new G4Tubs("SiChipSolid", 0., SiChip_OD/2, SiChip_H/2, 0., 360.*deg);
+
+	SiChipLogical = 
+		new G4LogicalVolume(SiChipSolid,					// The Solid
+							fMatSiChip,    					// Material
+							"SiChipLogical");     			// Name
+
+	SiChipPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - ELAST_RING_H - SiChip_H/2),
+							SiChipLogical,					// Logical volume
+							"SiChipPhysical",				// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+
+	////////////////////////////////////////////////////////////////////////
+	// Construct the elastomer pad on the back of the Si chip
+	G4VSolid* ElastSolid = new G4Tubs("ElastSolid", 0., ELAST_OD/2, ELAST_H/2, 0., 360.*deg);
+
+	ElastLogical = 
+		new G4LogicalVolume(ElastSolid,						// The Solid
+							fMatElastomer,    				// Material
+							"ElastLogical");     			// Name
+
+	ElastPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - ELAST_RING_H - SiChip_H - ELAST_H/2),
+							ElastLogical,					// Logical volume
+							"ElastPhysical",				// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+
+	////////////////////////////////////////////////////////////////////////
+	// Construct the brass contact on the back of the elastomer
+	G4VSolid* RC_Cyl1 = new G4Tubs("RC_Cyl1", 0., RC_OD/2, RC_H/2, 0., 360.*deg);
+	G4VSolid* RC_Cyl2 = new G4Tubs("RC_Cyl2", 0., RC_H/2, (HOUSING_H + BNC_H - HOUSING_FRONT_T - ELAST_RING_H - SiChip_H - ELAST_H - RC_H)/2, 0., 360.*deg);
+
+	G4VSolid* RCSolid = new G4UnionSolid("RCSolid", RC_Cyl1, RC_Cyl2, 0, G4ThreeVector(0,0,-RC_H/2 - (HOUSING_H + BNC_H - HOUSING_FRONT_T - ELAST_RING_H - SiChip_H - ELAST_H - RC_H)/2));
+
+	RCLogical = 
+		new G4LogicalVolume(RCSolid,						// The Solid
+							fMatRC,		    				// Material
+							"RCLogical");	     			// Name
+
+	RCPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - ELAST_RING_H - SiChip_H - ELAST_H - RC_H/2),
+							RCLogical,						// Logical volume
+							"RCPhysical",					// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+
+	////////////////////////////////////////////////////////////////////////
+	// Construct the RI polymer
+	G4VSolid* RISolid = new G4Tubs("RISolid", RI_ID/2, RI_OD/2, RI_H/2, 0., 360.*deg);
+
+	RILogical = 
+		new G4LogicalVolume(RISolid,						// The Solid
+							fMatRI,		    				// Material
+							"RILogical");	     			// Name
+
+	RIPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - ELAST_RING_H - SiChip_H - ELAST_H - RC_H - RI_H/2),
+							RILogical,						// Logical volume
+							"RIPhysical",					// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+	
+	////////////////////////////////////////////////////////////////////////
+	// Construct the BNC insulator
+	G4VSolid* BNCInsSolid = new G4Tubs("BNCInsSolid", RC_H/2, BNC_INS_OD/2, (BNC_H + HOUSING_BACK_T)/2 + 0.01*mm, 0., 360.*deg);
+
+	BNCInsLogical = 
+		new G4LogicalVolume(BNCInsSolid,						// The Solid
+							fMatBNCIns,		    				// Material
+							"BNCInsLogical");	     			// Name
+
+	BNCInsPhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,-(HOUSING_H-HOUSING_FRONT_T-HOUSING_BACK_T)/2 - (BNC_H + HOUSING_BACK_T)/2 + 0.01*mm),
+							BNCInsLogical,					// Logical volume
+							"BNCInsPhysical",				// Name
+							InnerHousingLogical,			// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
+
+	////////////////////////////////////////////////////////////////////////
   	// Visualisation attributes
   	
   	// World Volume (White)
@@ -214,9 +423,49 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   	WorldLogical->SetVisAttributes(Vis_World);
 
     // Housing Volume (Gray)
-    G4VisAttributes* Vis_Housing = new G4VisAttributes(G4Colour(0.5,0.5,0.5,1.));
-    Vis_Housing->SetForceWireframe(true);
+    G4VisAttributes* Vis_Housing = new G4VisAttributes(G4Colour(0.5,0.5,0.5,.2));
+    Vis_Housing->SetForceWireframe(false);
     HousingLogical->SetVisAttributes(Vis_Housing);
+
+	// Inner Housing Volume (Cyan)
+    G4VisAttributes* Vis_Inner_Housing = new G4VisAttributes(G4Colour(0.,1.0,1.0,0.2));
+    Vis_Inner_Housing->SetForceWireframe(false);
+    InnerHousingLogical->SetVisAttributes(Vis_Inner_Housing);
+
+	// Elastomer Ring Volume (Magenta)
+    G4VisAttributes* Vis_ElastomerRing = new G4VisAttributes(G4Colour(1.,0.,1.,1.));
+    Vis_ElastomerRing->SetForceWireframe(false);
+    ElastomerRingLogical->SetVisAttributes(Vis_ElastomerRing);
+
+	// LBI Polymer Volume (Blue)
+    G4VisAttributes* Vis_LBI = new G4VisAttributes(G4Colour(0.,0.,1.,0.3));
+    Vis_LBI->SetForceWireframe(false);
+    LBILogical->SetVisAttributes(Vis_LBI);
+
+	// Silicon Chip Volume (Orange)
+    G4VisAttributes* Vis_SiChip = new G4VisAttributes(G4Colour(1.,1.,0.,1.));
+    Vis_SiChip->SetForceWireframe(false);
+    SiChipLogical->SetVisAttributes(Vis_SiChip);
+
+	// Elastomer Volume (Magenta)
+    G4VisAttributes* Vis_Elast = new G4VisAttributes(G4Colour(1.,0.,1.,1.));
+    Vis_Elast->SetForceWireframe(false);
+    ElastLogical->SetVisAttributes(Vis_Elast);
+
+	// RC Volume (Gold)
+    G4VisAttributes* Vis_RC = new G4VisAttributes(G4Colour(1.,.2,.0,1.));
+    Vis_RC->SetForceWireframe(false);
+    RCLogical->SetVisAttributes(Vis_RC);
+
+	// RI Volume (Dark Gray)
+    G4VisAttributes* Vis_RI = new G4VisAttributes(G4Colour(0.1,0.1,0.1,1.));
+    Vis_RI->SetForceWireframe(false);
+    RILogical->SetVisAttributes(Vis_RI);
+
+	// BNC Insulator Volume (Light Yellow)
+    G4VisAttributes* Vis_BNCIns = new G4VisAttributes(G4Colour(0.3,0.3,0.,.5));
+    Vis_BNCIns->SetForceWireframe(false);
+    BNCInsLogical->SetVisAttributes(Vis_BNCIns);
 
 	////////////////////////////////////////////////////////////////////////
 	// Return world volume
@@ -233,7 +482,7 @@ void DetectorConstruction::ConstructSDandField()
 	G4MultiFunctionalDetector* SiScorer = new G4MultiFunctionalDetector("Si");
 	G4SDManager::GetSDMpointer()->AddNewDetector(SiScorer);	
 	G4SDManager::GetSDMpointer()->SetVerboseLevel(0);
-	//HousingLogical->SetSensitiveDetector(SiScorer);
+	SiChipLogical->SetSensitiveDetector(SiScorer);
  	
  	G4PSEnergyDeposit* eDep = new G4PSEnergyDeposit("eDep");
     SiScorer->RegisterPrimitive(eDep);
