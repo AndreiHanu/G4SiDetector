@@ -11,6 +11,8 @@
 #include "G4EmLivermorePhysics.hh"
 #include "G4EmPenelopePhysics.hh"
 #include "G4DecayPhysics.hh"
+#include "G4RadioactiveDecay.hh"
+#include "G4RadioactiveDecayPhysics.hh"
 
 #include "G4PAIModel.hh"
 #include "G4PAIPhotModel.hh"
@@ -34,7 +36,8 @@
 
 PhysicsList::PhysicsList() : G4VModularPhysicsList(),
 	fEmPhysicsList(0),
-  	fDecayPhysicsList(0)
+  	fDecayPhysicsList(0),
+	fRadioactiveDecayPhysicsList(0)
 {	
 	// Default cut value
   	SetDefaultCutValue(0.5*mm);
@@ -44,6 +47,9 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
 
   	// Decay Physics is always defined
   	fDecayPhysicsList = new G4DecayPhysics();
+	
+	// Radioactive Decay Physics
+	fRadioactiveDecayPhysicsList = new G4RadioactiveDecayPhysics();
 
   	// EM physics
   	fEmPhysicsList = new G4EmStandardPhysics();
@@ -61,6 +67,7 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
 PhysicsList::~PhysicsList()
 {
 	delete fDecayPhysicsList;
+	delete fRadioactiveDecayPhysicsList;
 	delete fEmPhysicsList;
 }
 
@@ -84,6 +91,9 @@ void PhysicsList::ConstructProcess()
 	
 	// Decay Physics
 	fDecayPhysicsList->ConstructProcess();
+
+	// Radioactive Decay Physics
+	fRadioactiveDecayPhysicsList->ConstructProcess();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

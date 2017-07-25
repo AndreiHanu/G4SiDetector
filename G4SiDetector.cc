@@ -60,7 +60,7 @@ int main(int argc,char** argv)
 	// Choose the Random engine
   	G4Random::setTheEngine(new CLHEP::RanecuEngine);
      
-  	// Construct the default run manager	
+  	// Construct the default run manager
 	#ifdef G4MULTITHREADED
 		G4cout << "Simulation is running on " << G4Threading::G4GetNumberOfCores() << " threads";
         G4MTRunManager* runManager = new G4MTRunManager;
@@ -69,7 +69,7 @@ int main(int argc,char** argv)
 	#else
   		G4RunManager* runManager = new G4RunManager;
 	#endif
-	
+
 	// Set mandatory initialization classes
   	DetectorConstruction* detector = new DetectorConstruction();
   	runManager->SetUserInitialization(detector);

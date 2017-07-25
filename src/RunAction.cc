@@ -112,7 +112,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
 		time_t now = time(0);
     	
     	// Export Source Information
-    	outFile_INFO << "End Time: \t\t\t" <<  ctime(&now);
+    	outFile_INFO << "End Time: \t\t" <<  ctime(&now);
 		outFile_INFO << "============================    Source Information    ============================" << G4endl;
 		outFile_INFO << "Number of Events: \t" << aRun->GetNumberOfEvent() << G4endl;	
 		outFile_INFO << "============================    Detector Information    ============================" << G4endl;
