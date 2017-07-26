@@ -28,16 +28,4 @@
 #
 
 /control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 10 10
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 11 11
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 14 14
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 17 17
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 20 20
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 24 24
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 28 28
+/control/loop runElectronISO.mac Ekin 1000 1000

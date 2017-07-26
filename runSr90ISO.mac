@@ -1,4 +1,4 @@
-/control/alias N_R 1000000000
+/control/alias N_R 10000000
 
 ##########################
 # Set name for the output file
@@ -15,7 +15,7 @@
 #
 /gps/particle ion
 /gps/ion 38 90 0 0
-/gps/energy 10 keV
+/gps/energy 0 keV
 
 ##########################################################################################
 # Model the particle source along the surface of a sphere surrounding the detector

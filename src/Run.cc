@@ -1,4 +1,5 @@
 #include "Run.hh"
+#include "PrimaryGeneratorAction.hh"
 #include "G4Event.hh"
 #include "G4Run.hh"
 #include "G4SDManager.hh"
@@ -11,8 +12,7 @@
 #include "Analysis.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-Run::Run():G4Run()
+Run::Run(PrimaryGeneratorAction* primary):G4Run(), particleGun(primary)
 {
 	G4SDManager* SDMan = G4SDManager::GetSDMpointer(); 
     	
@@ -57,7 +57,8 @@ void Run::RecordEvent(const G4Event* event)
   		G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   		
   		// Fill ntuple
-  		analysisManager->FillNtupleDColumn(0, eDep/eV);
+		analysisManager->FillNtupleDColumn(0, particleGun->GetGPS()->GetParticleEnergy()/eV);
+  		analysisManager->FillNtupleDColumn(1, eDep/eV);
   		analysisManager->AddNtupleRow();
 	}
 	

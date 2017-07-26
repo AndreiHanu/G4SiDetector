@@ -193,7 +193,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct The World Volume
 
-	G4double world_X = 6.5*cm;
+	G4double world_X = 30*cm;
 	G4double world_Y = world_X;
 	G4double world_Z = world_X;
 	

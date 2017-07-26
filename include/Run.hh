@@ -5,12 +5,13 @@
 #include "globals.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+class PrimaryGeneratorAction;
 
 class Run : public G4Run
 {
 	public:
 		// Constructor
-  		Run();
+  		Run(PrimaryGeneratorAction*);
   		// Destructor
   		virtual ~Run();
 		
@@ -19,6 +20,7 @@ class Run : public G4Run
 // 		virtual void Merge(const G4Run*);
 
 	private:
+		PrimaryGeneratorAction* particleGun;
 		G4int ID_eDep;
 };
 

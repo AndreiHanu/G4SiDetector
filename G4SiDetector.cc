@@ -70,6 +70,8 @@ int main(int argc,char** argv)
   		G4RunManager* runManager = new G4RunManager;
 	#endif
 
+	//G4RunManager* runManager = new G4RunManager;
+
 	// Set mandatory initialization classes
   	DetectorConstruction* detector = new DetectorConstruction();
   	runManager->SetUserInitialization(detector);

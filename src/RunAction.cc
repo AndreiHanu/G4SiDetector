@@ -40,7 +40,8 @@ detector(det), particleGun(primary)
   	
   	// Create ntuple 
   	// TEPC sensitive volume
- 	analysisManager->CreateNtuple("G4SiDetector", "Edep");
+ 	analysisManager->CreateNtuple("G4SiDetector", "Etrue Edep");
+	analysisManager->CreateNtupleDColumn("eTrue");
  	analysisManager->CreateNtupleDColumn("eDep");
  	analysisManager->FinishNtuple();
 }
@@ -57,7 +58,7 @@ RunAction::~RunAction()
 
 G4Run* RunAction::GenerateRun()
 { 
-	return new Run; 
+	return new Run(particleGun); 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

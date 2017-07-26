@@ -40,10 +40,10 @@ target_link_libraries(G4SiDetector ${Geant4_LIBRARIES})
 set(G4SIDETECTOR_SCRIPTS
   vis.mac
   runGammaISO.mac
-  runGammaISO_loop.mac
   runElectronISO.mac
   runElectronISO_loop.mac
   runSr90ISO.mac
+  runCs137ISO.mac
 )
 
 foreach(_script ${G4SIDETECTOR_SCRIPTS})

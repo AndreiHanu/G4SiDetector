@@ -1,17 +1,22 @@
-/control/alias Emin 1
-/control/alias Emax 10000
-/control/alias R 20
 /control/alias N_R 100000000
+/control/alias R 20
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName gamma_{Emin}_{Emax}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName Cs137_Nr_{N_R}_R_{R}_ISO
 
 ##########################
 # Initialisation procedure
 #
 /run/initialize
+
+#########################
+# Set ion type and kinetic energy
+#
+/gps/particle ion
+/gps/ion 55 137 0 0
+/gps/energy 0 keV
 
 ##########################################################################################
 # Model the particle source along the surface of a sphere surrounding the detector
@@ -26,16 +31,6 @@
 /gps/ang/type cos
 /gps/ang/mintheta    0.000E+00 deg
 /gps/ang/maxtheta    9.000E+01 deg
-
-#########################
-# Set particle type, energy, and distribution
-#
-/gps/particle gamma
-/gps/ene/type Lin
-/gps/ene/gradient 0
-/gps/ene/intercept 1.
-/gps/ene/min {Emin} keV
-/gps/ene/max {Emax} keV
 
 #########################
 # Run particles
