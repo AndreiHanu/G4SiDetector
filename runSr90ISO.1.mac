@@ -1,18 +1,21 @@
-##########################
-# Scale the {Emin} and {Emax} in MeV
-/control/divide Emin_MeV {Emin} 1000
-/control/divide Emax_MeV {Emax} 1000
-/control/listAlias
+/control/alias N_R 10000000
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_{Emin}_{Emax}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName Sr90_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
 #
 /run/initialize
+
+#########################
+# Set ion type and kinetic energy
+#
+/gps/particle ion
+/gps/ion 38 90 0 0
+/gps/energy 0 keV
 
 ##########################################################################################
 # Model the particle source along the surface of a sphere surrounding the detector
@@ -20,23 +23,13 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius {R} cm
+/gps/pos/radius 3.0 cm
 
 ##########################################################################################
 # Use the cosine angular distribution
 /gps/ang/type cos
 /gps/ang/mintheta    0.000E+00 deg
 /gps/ang/maxtheta    9.000E+01 deg
-
-#########################
-# Set particle type, energy, and distribution
-#
-/gps/particle e-
-/gps/ene/type Lin
-/gps/ene/min {Emin} keV
-/gps/ene/max {Emax} keV
-/gps/ene/gradient 0.
-/gps/ene/intercept {Emin_MeV}
 
 #########################
 # Run particles

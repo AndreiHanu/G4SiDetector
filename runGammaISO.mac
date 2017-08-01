@@ -1,7 +1,8 @@
-/control/alias Emin 1
-/control/alias Emax 10000
-/control/alias R 20
-/control/alias N_R 100000000
+##########################
+# Scale the {Emin} and {Emax} in MeV
+/control/divide Emin_MeV {Emin} 1000
+/control/divide Emax_MeV {Emax} 1000
+/control/listAlias
 
 ##########################
 # Set name for the output file
@@ -32,10 +33,10 @@
 #
 /gps/particle gamma
 /gps/ene/type Lin
-/gps/ene/gradient 0
-/gps/ene/intercept 1.
 /gps/ene/min {Emin} keV
 /gps/ene/max {Emax} keV
+/gps/ene/gradient 0.
+/gps/ene/intercept {Emin_MeV}
 
 #########################
 # Run particles

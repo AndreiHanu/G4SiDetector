@@ -1,31 +1,16 @@
-#########################
-# Set of the verboses 
-#
-/control/verbose 0
-/tracking/verbose 0
-/event/verbose 0
-/run/verbose 0
-/vis/verbose 0
-
-#########################
-# Set detector parameters
-#
-#/G4SiDetector/DetectorAngle 0.0 deg
-
-##########################
-# Multi-threading mode
-#
-#/run/numberOfThreads 8
-
-##########################
-# Set of the physic models
-#
-#/cuts/setLowEdge 990 eV
-
 ##########################
 # Use a control loop to execute a macro file more than once for
 # different particle energies
 #
 
-/control/alias N_R 1000000000
-/control/loop runElectronISO.mac Ekin 1000 1000
+/control/alias Emin 100
+/control/alias Emax 10000
+/control/alias R 20
+/control/alias N_R 2000000000
+/control/execute runElectronISO.mac
+
+#/control/alias Emin 1000
+#/control/alias Emax 10000
+#/control/alias R 20
+#/control/alias N_R 1000000
+#/control/execute runElectronISO.mac

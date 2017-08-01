@@ -1,13 +1,15 @@
 ##########################
-# Scale the {Emin} and {Emax} in MeV
-/control/divide Emin_MeV {Emin} 1000
-/control/divide Emax_MeV {Emax} 1000
+# Set the aliases for the rest of the macro file
+/control/alias Emean 5000
+/control/alias Esigma 1000
+/control/alias R 20
+/control/alias N_R 2000000000
 /control/listAlias
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_{Emin}_{Emax}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName electron_{Emean}_keV_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -32,11 +34,9 @@
 # Set particle type, energy, and distribution
 #
 /gps/particle e-
-/gps/ene/type Lin
-/gps/ene/min {Emin} keV
-/gps/ene/max {Emax} keV
-/gps/ene/gradient 0.
-/gps/ene/intercept {Emin_MeV}
+/gps/ene/type Gauss
+/gps/ene/mono {Emean} keV
+/gps/ene/sigma {Esigma} keV
 
 #########################
 # Run particles
