@@ -83,15 +83,12 @@ int main(int argc,char** argv)
 	// Set user action classes
 	runManager->SetUserInitialization(new ActionInitialization(detector)); 
   
-  	// Initialize G4 kernel
-  	runManager->Initialize();
-  
 	#ifdef G4VIS_USE
-  	// Initialize visualization
-  	G4VisManager* visManager = new G4VisExecutive;
-  	// G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  	// G4VisManager* visManager = new G4VisExecutive("Quiet");
-  	visManager->Initialize();
+		// Initialize visualization
+		G4VisManager* visManager = new G4VisExecutive;
+		// G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
+		// G4VisManager* visManager = new G4VisExecutive("Quiet");
+		visManager->Initialize();
 	#endif
 
   	// Get the pointer to the User Interface manager
@@ -107,12 +104,9 @@ int main(int argc,char** argv)
     	{  // interactive mode : define UI session
 		#ifdef G4UI_USE
       		G4UIExecutive* ui = new G4UIExecutive(argc, argv);
-		#ifdef G4VIS_USE
-      		UImanager->ApplyCommand("/control/execute vis.mac"); 
+      		ui->SessionStart();
+      		delete ui;
 		#endif
-      	ui->SessionStart();
-      	delete ui;
-	#endif
     }
 
   	// Job termination

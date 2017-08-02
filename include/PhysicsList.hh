@@ -30,9 +30,9 @@ private:
                      const G4String& modname,
                      const G4String& procname);
 
- 	G4VPhysicsConstructor*  fEmPhysicsList;
+ 	G4VPhysicsConstructor* fEmPhysicsList;
+  	G4VPhysicsConstructor* fDecayPhysicsList;
 	G4VPhysicsConstructor* fRadioactiveDecayPhysicsList;
-  	G4VPhysicsConstructor*  fDecayPhysicsList;
   	G4String fEmName;
 };
 

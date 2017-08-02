@@ -1,8 +1,23 @@
 ##########################
 # Scale the {Emin} and {Emax} in MeV
+#
 /control/divide Emin_MeV {Emin} 1000
 /control/divide Emax_MeV {Emax} 1000
-/control/listAlias
+
+#########################
+# Set detector parameters
+#
+/G4SiDetector/DetectorAngle 0. deg
+
+##########################
+# Multi-threading mode
+#
+/run/numberOfThreads 8
+
+##########################
+# Set of the physic models
+#
+/cuts/setLowEdge 990 eV
 
 ##########################
 # Set name for the output file
