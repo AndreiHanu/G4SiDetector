@@ -41,11 +41,13 @@ set(G4SIDETECTOR_SCRIPTS
   vis.mac
   runGammaISO.mac
   runGammaISO_loop.mac
+  runMonoGammaISO.mac
   runElectronISO.mac
   runElectronISO_loop.mac
   runMonoElectronISO.mac
   runSr90ISO.mac
   runCs137ISO.mac
+  runCs135ISO.mac
 )
 
 foreach(_script ${G4SIDETECTOR_SCRIPTS})

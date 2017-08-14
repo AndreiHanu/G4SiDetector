@@ -1,9 +1,9 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Emean 9000
-/control/alias Esigma 900
+/control/alias Emean 500
+/control/alias Esigma 100
 /control/alias R 20
-/control/alias N_R 100000000
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################
@@ -24,7 +24,7 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_{Emean}_keV_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName gamma_{Emean}_keV_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -48,7 +48,7 @@
 #########################
 # Set particle type, energy, and distribution
 #
-/gps/particle e-
+/gps/particle gamma
 /gps/ene/type Gauss
 /gps/ene/mono {Emean} keV
 /gps/ene/sigma {Esigma} keV

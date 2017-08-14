@@ -37,9 +37,11 @@ detector(det), particleGun(primary)
   	
 	// Default settings 
   	analysisManager->SetVerboseLevel(0); 
+
+	// Merge the ntuples from all of the worker threads
+	analysisManager->SetNtupleMerging(true);
   	
-  	// Create ntuple 
-  	// TEPC sensitive volume
+  	// Create ntuple
  	analysisManager->CreateNtuple("G4SiDetector", "Etrue Edep");
 	analysisManager->CreateNtupleDColumn("eTrue");
  	analysisManager->CreateNtupleDColumn("eDep");
@@ -77,6 +79,12 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   	
   	// For the master let's create an info file
   	if (IsMaster()){
+		// Filename for AnalysisManager is provided in the macro file using
+		// /analysis/setFileName command and the RunID is appended at the end
+		
+		//analysisManager->SetFileName(analysisManager->GetFileName()(0:10) + "_" + G4UIcommand::ConvertToString(aRun->GetRunID()));
+		analysisManager->OpenFile();
+		
 		// Get the local time at the start of the simulation
 		time_t now = time(0);
 		
@@ -100,12 +108,11 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
 { 	
   	// Output & close analysis file 
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance(); 
-	if (!IsMaster()){
-  		analysisManager->CloseFile(); 
-  	}
+	analysisManager->Write();
+  	analysisManager->CloseFile();
   	
   	// Append Source Information to the INFO file
-  	if (IsMaster()){
+  	if (IsMaster()){ 
 		// Open the Information File
 		std::ofstream outFile_INFO(outputFile_INFO,std::ios::out|std::ios::app);
 		

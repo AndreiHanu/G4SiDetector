@@ -1,9 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Emean 9000
-/control/alias Esigma 900
 /control/alias R 20
-/control/alias N_R 100000000
+/control/alias N_R 20000000
 /control/listAlias
 
 #########################
@@ -24,7 +22,7 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_{Emean}_keV_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName Cs135_Nr_{N_R}_R_{R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -37,7 +35,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius {R} cm
+/gps/pos/radius 3.0 cm
 
 ##########################################################################################
 # Use the cosine angular distribution
@@ -46,12 +44,11 @@
 /gps/ang/maxtheta    9.000E+01 deg
 
 #########################
-# Set particle type, energy, and distribution
+# Set ion type and kinetic energy
 #
-/gps/particle e-
-/gps/ene/type Gauss
-/gps/ene/mono {Emean} keV
-/gps/ene/sigma {Esigma} keV
+/gps/particle ion
+/gps/ion 55 135 0 0
+/gps/energy 0 keV
 
 #########################
 # Run particles

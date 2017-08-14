@@ -158,6 +158,7 @@ void DetectorConstruction::DefineMaterials()
   	// NIST materials
   	//G4Material* galactic = nistManager->FindOrBuildMaterial("G4_Galactic");
 	G4Material* Air = nistManager->FindOrBuildMaterial("G4_AIR");
+	G4Material* Vacuum = nistManager->FindOrBuildMaterial("G4_Galactic");
 	G4Material* Si = nistManager->FindOrBuildMaterial("G4_Si");
     G4Material* Stainless_Steel = nistManager->FindOrBuildMaterial("G4_STAINLESS-STEEL");
     G4Material* Brass = nistManager->FindOrBuildMaterial("G4_BRASS");
@@ -165,7 +166,8 @@ void DetectorConstruction::DefineMaterials()
 	G4Material* Ceramic = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
 	  
   	// Set the materials for the Geometry
-  	fMatWorld = Air;
+  	//fMatWorld = Air;
+	fMatWorld = Vacuum;
     fMatHousing = Stainless_Steel;
 	fMatInnerHousing = Air;
     fMatSiChip = Si;
@@ -193,7 +195,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct The World Volume
 
-	G4double world_X = 30*cm;
+	G4double world_X = 60*cm;
 	G4double world_Y = world_X;
 	G4double world_Z = world_X;
 	

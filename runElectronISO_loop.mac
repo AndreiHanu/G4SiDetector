@@ -3,14 +3,20 @@
 # different particle energies
 #
 
-/control/alias Emin 100
+#/control/alias Emin 10
+#/control/alias Emax 100
+#/control/alias R 20
+#/control/alias N_R 2000000000
+#/control/execute runElectronISO.mac
+
+#/control/alias Emin 100
+#/control/alias Emax 1000
+#/control/alias R 20
+#/control/alias N_R 2000000000
+#/control/execute runElectronISO.mac
+
+/control/alias Emin 10
 /control/alias Emax 10000
 /control/alias R 20
 /control/alias N_R 2000000000
 /control/execute runElectronISO.mac
-
-#/control/alias Emin 1000
-#/control/alias Emax 10000
-#/control/alias R 20
-#/control/alias N_R 1000000
-#/control/execute runElectronISO.mac

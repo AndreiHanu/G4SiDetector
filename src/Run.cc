@@ -67,11 +67,12 @@ void Run::RecordEvent(const G4Event* event)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-// 
-// void Run::Merge(const G4Run* aRun)
-// {
-//   	const Run* localRun = static_cast<const Run*>(aRun);
-//   	
-//   	//  Invoke base class method
-//   	G4Run::Merge(aRun); 
-// } 
+/*
+void Run::Merge(const G4Run* aRun)
+{
+   	const Run* localRun = static_cast<const Run*>(aRun);
+   	
+   	//  Invoke base class method
+   	G4Run::Merge(aRun); 
+} 
+*/
