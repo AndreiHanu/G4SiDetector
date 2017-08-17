@@ -25,9 +25,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     
         // Set Methods
         void SetDetectorAngle(G4double val);
+        void SetSourceRadius(G4double val);
     
         // Get Methods
         G4double GetDetectorAngle();
+        G4double GetSourceRadius();
     
     private:
         // Defines all the detector materials
@@ -52,6 +54,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     
         // Logical Volumes
         G4LogicalVolume* WorldLogical;
+        G4LogicalVolume* SourceLogical;
         G4LogicalVolume* HousingLogical;
         G4LogicalVolume* InnerHousingLogical;
         G4LogicalVolume* ElastomerRingLogical;
@@ -61,10 +64,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         G4LogicalVolume* RCLogical;
         G4LogicalVolume* RILogical; 
         G4LogicalVolume* BNCInsLogical;
-        //G4LogicalVolume* SourceLogical;
     
         // Physical Volumes
         G4VPhysicalVolume* WorldPhysical;
+        G4VPhysicalVolume* SourcePhysical;
         G4VPhysicalVolume* HousingPhysical;
         G4VPhysicalVolume* InnerHousingPhysical;
         G4VPhysicalVolume* ElastomerRingPhysical;
@@ -74,7 +77,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
         G4VPhysicalVolume* RCPhysical;
         G4VPhysicalVolume* RIPhysical;
         G4VPhysicalVolume* BNCInsPhysical;
-        //G4VPhysicalVolume* SourcePhysical;
     
         // Geometry Parameters
         G4double HOUSING_OD;
@@ -103,6 +105,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 	    // Rotation Angles
 	    G4double rotX;
+        G4double sourceRadius;
 
 };
 

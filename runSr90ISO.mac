@@ -1,13 +1,14 @@
 ##########################
 # Set the aliases for the rest of the macro file
 /control/alias R 20
-/control/alias N_R 20000000
+/control/alias N_R 200000000
 /control/listAlias
 
 #########################
 # Set detector parameters
 #
 /G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
 
 ##########################
 # Multi-threading mode
@@ -17,12 +18,12 @@
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 990 eV
+/cuts/setLowEdge 100 eV
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName Sr90_Nr_{N_R}_ISO
+/analysis/setFileName Sr90_Nr_{N_R}_R_{R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -35,7 +36,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius 3.0 cm
+/gps/pos/radius {R} cm
 
 ##########################################################################################
 # Use the cosine angular distribution
@@ -48,7 +49,6 @@
 #
 /gps/particle ion
 /gps/ion 38 90 0 0
-/gps/energy 0 keV
 
 #########################
 # Run particles

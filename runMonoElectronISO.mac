@@ -3,13 +3,14 @@
 /control/alias Emean 9000
 /control/alias Esigma 900
 /control/alias R 20
-/control/alias N_R 100000000
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################
 # Set detector parameters
 #
 /G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
 
 ##########################
 # Multi-threading mode

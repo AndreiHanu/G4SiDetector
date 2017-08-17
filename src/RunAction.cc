@@ -122,6 +122,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     	// Export Source Information
     	outFile_INFO << "End Time: \t\t" <<  ctime(&now);
 		outFile_INFO << "============================    Source Information    ============================" << G4endl;
+		outFile_INFO << "Source Radius: \t" << detector->GetSourceRadius()/cm << " cm" << G4endl;	
 		outFile_INFO << "Number of Events: \t" << aRun->GetNumberOfEvent() << G4endl;	
 		outFile_INFO << "============================    Detector Information    ============================" << G4endl;
 		outFile_INFO << "Detector Angle: \t" << detector->GetDetectorAngle()/degree << " deg" << G4endl;	

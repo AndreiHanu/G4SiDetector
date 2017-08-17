@@ -8,6 +8,7 @@
 # Set detector parameters
 #
 /G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
 
 ##########################
 # Multi-threading mode
@@ -17,7 +18,7 @@
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 990 eV
+/cuts/setLowEdge 100 eV
 
 ##########################
 # Set name for the output file

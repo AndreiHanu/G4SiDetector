@@ -40,7 +40,7 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList(),
 	fRadioactiveDecayPhysicsList(0)
 {	
 	// Default cut value
-  	SetDefaultCutValue(0.5*mm);
+  	SetDefaultCutValue(0.01*mm);
   	
   	// Verbosity level
   	SetVerboseLevel(1);

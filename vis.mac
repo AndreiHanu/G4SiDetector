@@ -1,5 +1,24 @@
 # Macro file for the visualization setting in the initialization phase 
 
+##########################
+# Set the aliases for the rest of the macro file
+/control/alias Emean 100
+/control/alias Esigma 10
+/control/alias R 20
+/control/alias N_R 10
+/control/listAlias
+
+#########################
+# Set detector parameters
+#
+/G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
+
+##########################
+# Initialisation procedure
+#
+/run/initialize
+
 # Create empty scene
 /vis/scene/create
 /vis/open OGL 800x800-0+0
@@ -25,17 +44,38 @@
 /vis/filtering/trajectories/create/particleFilter
 /vis/filtering/trajectories/particleFilter-0/add gamma
 /vis/filtering/trajectories/particleFilter-0/add e-
-#/vis/filtering/trajectories/particleFilter-0/add proton
-#/vis/filtering/trajectories/particleFilter-0/add neutron
 
 # Choose Particle Colour
 /vis/modeling/trajectories/create/drawByParticleID
 /vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
 /vis/modeling/trajectories/drawByParticleID-0/set e- green
-#/vis/modeling/trajectories/drawByParticleID-0/set proton blue
-#/vis/modeling/trajectories/drawByParticleID-0/set neutron yellow
 
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate 10
 
-# /run/initialize
+##########################################################################################
+# Model the particle source along the surface of a sphere surrounding the detector
+
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. cm
+/gps/pos/radius {R} cm
+
+##########################################################################################
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+
+#########################
+# Set particle type, energy, and distribution
+#
+/gps/particle e-
+/gps/ene/type Gauss
+/gps/ene/mono {Emean} keV
+/gps/ene/sigma {Esigma} keV
+
+#########################
+# Run particles
+#
+#/run/beamOn {N_R}

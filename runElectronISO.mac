@@ -8,6 +8,7 @@
 # Set detector parameters
 #
 /G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
 
 ##########################
 # Multi-threading mode

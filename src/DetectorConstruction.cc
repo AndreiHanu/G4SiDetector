@@ -133,6 +133,9 @@ WorldPhysical(0)
 
 	// Rotation Angle
 	rotX = 0.0*deg;		
+
+	// Source Radius
+	sourceRadius = 20.*cm;
 			 
 	// Define Materials
 	DefineMaterials();
@@ -195,7 +198,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct The World Volume
 
-	G4double world_X = 60*cm;
+	G4double world_X = 2*(sourceRadius + 1.*cm);
 	G4double world_Y = world_X;
 	G4double world_Z = world_X;
 	
@@ -214,7 +217,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 							0,								// Mother volume
 							false,							// Unused boolean parameter
 							0,								// Copy number
-							fCheckOverlaps);				// Overlap Check	
+							fCheckOverlaps);				// Overlap Check
+
+	////////////////////////////////////////////////////////////////////////
+	// Construct the Source sphere
+	// Note: The actual radius of the Source solid will be slightly smaller (0.1 mm) than
+	// specified in the macro files in order to allow tracking the incident kinetic energy
+	// of particles.
+	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., (sourceRadius - 0.1*mm)/2, 0., 360.0*degree, 0., 180.0*degree);
+
+	SourceLogical = 
+		new G4LogicalVolume(SourceSolid,						// The Solid
+							fMatWorld,		    				// Material
+							"SourceLogical");	     			// Name
+
+	SourcePhysical = 
+		new G4PVPlacement(	0,								// No Rotation
+							G4ThreeVector(0,0,0),
+							SourceLogical,					// Logical volume
+							"SourcePhysical",				// Name
+							WorldLogical,					// Mother volume
+							false,							// Unused boolean parameter
+							0,								// Copy number
+							fCheckOverlaps);				// Overlap Check
 							
 	////////////////////////////////////////////////////////////////////////
 	// Construct the detector housing	
@@ -245,7 +270,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 		new G4PVPlacement(	G4Transform3D(Housing_Rot,Housing_Trans),	// Translation
 							HousingLogical,					// Logical volume
 							"Housing_Physical",		        // Name
-							WorldLogical,					// Mother volume
+							SourceLogical,					// Mother volume
 							false,							// Unused boolean parameter
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
@@ -422,27 +447,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
 
-	/*
-	////////////////////////////////////////////////////////////////////////
-	// Construct the Source sphere for testing
-	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., (6.*cm)/2, 0., 360.0*degree, 0., 180.0*degree);
-
-	SourceLogical = 
-		new G4LogicalVolume(SourceSolid,						// The Solid
-							fMatWorld,		    				// Material
-							"SourceLogical");	     			// Name
-
-	SourcePhysical = 
-		new G4PVPlacement(	0,								// No Rotation
-							G4ThreeVector(0,0,0),
-							SourceLogical,					// Logical volume
-							"SourcePhysical",				// Name
-							WorldLogical,					// Mother volume
-							false,							// Unused boolean parameter
-							0,								// Copy number
-							fCheckOverlaps);				// Overlap Check
-	*/
-
 	////////////////////////////////////////////////////////////////////////
   	// Visualisation attributes
   	
@@ -450,6 +454,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   	G4VisAttributes* Vis_World = new G4VisAttributes(G4Colour(1.,1.,1.,0.1));
   	Vis_World->SetForceWireframe(true);
   	WorldLogical->SetVisAttributes(Vis_World);
+
+	// Source Volume (Light Yellow)
+    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,.2));
+    Vis_Source->SetForceWireframe(true);
+    SourceLogical->SetVisAttributes(Vis_Source);
 
     // Housing Volume (Gray)
     G4VisAttributes* Vis_Housing = new G4VisAttributes(G4Colour(0.5,0.5,0.5,.2));
@@ -496,13 +505,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     Vis_BNCIns->SetForceWireframe(false);
     BNCInsLogical->SetVisAttributes(Vis_BNCIns);
 
-	/*
-	// Source Volume (Light Yellow)
-    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,.2));
-    Vis_Source->SetForceWireframe(true);
-    SourceLogical->SetVisAttributes(Vis_Source);
-	*/
-
 	////////////////////////////////////////////////////////////////////////
 	// Return world volume
 	return WorldPhysical; 
@@ -539,6 +541,19 @@ void DetectorConstruction::SetDetectorAngle(G4double val)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void DetectorConstruction::SetSourceRadius(G4double val)
+{
+	if(WorldPhysical) {    
+    	G4Exception ("DetectorConstruction::SetSourceRadius()", "G4SiDetector", 
+                 	JustWarning, 
+                 	"Attempt to change already constructed geometry is ignored");
+  	} else {
+   		sourceRadius = val;
+  	}
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 G4double DetectorConstruction::GetDetectorAngle()
 {
 	// Return the detector angle
@@ -547,16 +562,32 @@ G4double DetectorConstruction::GetDetectorAngle()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+G4double DetectorConstruction::GetSourceRadius()
+{
+	// Return the detector angle
+	return sourceRadius;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 void DetectorConstruction::DefineCommands()
 {
-    // Define /CNPTEPC/ command directory using generic messenger class
+    // Define command directory using generic messenger class
     fMessenger = new G4GenericMessenger(this, "/G4SiDetector/", "Geometry control");
 
-    // Converter Thickness Command
+    // Detector Angle Command
     G4GenericMessenger::Command& DetectorAngleCmd
       = fMessenger->DeclareMethodWithUnit("DetectorAngle","deg",
                                   &DetectorConstruction::SetDetectorAngle, 
                                   "Set the angle of the detector within the world volume.");
     DetectorAngleCmd.SetParameterName("angle", true);
     DetectorAngleCmd.SetDefaultValue("0.0");
+
+	// Source Radius Command
+	G4GenericMessenger::Command& SourceRadiusCmd
+      = fMessenger->DeclareMethodWithUnit("SourceRadius","cm",
+                                  &DetectorConstruction::SetSourceRadius, 
+                                  "Set the radius of the source volume within the world volume.");
+    SourceRadiusCmd.SetParameterName("radius", true);
+    SourceRadiusCmd.SetDefaultValue("20.0");
 }

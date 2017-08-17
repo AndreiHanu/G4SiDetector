@@ -1,7 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
 /control/alias R 20
-/control/alias N_R 20000000
+/control/alias N_R 200000000
 /control/listAlias
 
 #########################
@@ -18,12 +18,12 @@
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 990 eV
+/cuts/setLowEdge 100 eV
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName Cs135_Nr_{N_R}_R_{R}_ISO
+/analysis/setFileName Co60_Nr_{N_R}_R_{R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -36,7 +36,7 @@
 /gps/pos/type Surface
 /gps/pos/shape Sphere
 /gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius 3.0 cm
+/gps/pos/radius {R} cm
 
 ##########################################################################################
 # Use the cosine angular distribution
@@ -48,8 +48,7 @@
 # Set ion type and kinetic energy
 #
 /gps/particle ion
-/gps/ion 55 135 0 0
-/gps/energy 0 keV
+/gps/ion 27 60 0 0
 
 #########################
 # Run particles
