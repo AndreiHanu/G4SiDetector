@@ -49,6 +49,7 @@
 #
 /gps/particle ion
 /gps/ion 38 90 0 0
+/gps/energy 0 keV
 
 #########################
 # Run particles

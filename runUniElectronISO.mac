@@ -1,0 +1,149 @@
+##########################
+# Set the aliases for the rest of the macro file
+/control/alias R 20
+/control/alias N_R 200000000
+/control/listAlias
+
+#########################
+# Set detector parameters
+#
+/G4SiDetector/DetectorAngle 0. deg
+/G4SiDetector/SourceRadius {R} cm
+
+##########################
+# Multi-threading mode
+#
+/run/numberOfThreads 8
+
+##########################
+# Set of the physic models
+#
+/cuts/setLowEdge 990 eV
+
+##########################
+# Set name for the output file
+#
+/analysis/setFileName electron_Uni_R_{R}_cm_Nr_{N_R}_ISO
+
+##########################
+# Initialisation procedure
+#
+/run/initialize
+
+##########################################################################################
+# Model the particle source along the surface of a sphere surrounding the detector
+
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. cm
+/gps/pos/radius {R} cm
+
+##########################################################################################
+# Use the cosine angular distribution
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+
+#########################
+# Set particle type, energy, and distribution
+#
+
+/gps/particle e-
+/gps/ene/type Arb
+/gps/hist/type arb
+/gps/hist/point 0.01 1000.0
+/gps/hist/point 0.0107977516233 926.118728129
+/gps/hist/point 0.0116591440118 857.695898591
+/gps/hist/point 0.0125892541179 794.328234724
+/gps/hist/point 0.0135935639088 735.64225446
+/gps/hist/point 0.0146779926762 681.292069058
+/gps/hist/point 0.0158489319246 630.95734448
+/gps/hist/point 0.0171132830416 584.341413374
+/gps/hist/point 0.0184784979742 541.169526546
+/gps/hist/point 0.0199526231497 501.187233627
+/gps/hist/point 0.0215443469003 464.158883361
+/gps/hist/point 0.0232630506715 429.866234708
+/gps/hist/point 0.0251188643151 398.107170553
+/gps/hist/point 0.0271227257933 368.694506452
+/gps/hist/point 0.0292864456463 341.454887383
+/gps/hist/point 0.0316227766017 316.227766017
+/gps/hist/point 0.0341454887383 292.864456463
+/gps/hist/point 0.0368694506452 271.227257933
+/gps/hist/point 0.0398107170553 251.188643151
+/gps/hist/point 0.0429866234708 232.630506715
+/gps/hist/point 0.0464158883361 215.443469003
+/gps/hist/point 0.0501187233627 199.526231497
+/gps/hist/point 0.0541169526546 184.784979742
+/gps/hist/point 0.0584341413374 171.132830416
+/gps/hist/point 0.063095734448 158.489319246
+/gps/hist/point 0.0681292069058 146.779926762
+/gps/hist/point 0.073564225446 135.935639088
+/gps/hist/point 0.0794328234724 125.892541179
+/gps/hist/point 0.0857695898591 116.591440118
+/gps/hist/point 0.0926118728129 107.977516233
+/gps/hist/point 0.1 100.0
+/gps/hist/point 0.107977516233 92.6118728129
+/gps/hist/point 0.116591440118 85.7695898591
+/gps/hist/point 0.125892541179 79.4328234724
+/gps/hist/point 0.135935639088 73.564225446
+/gps/hist/point 0.146779926762 68.1292069058
+/gps/hist/point 0.158489319246 63.095734448
+/gps/hist/point 0.171132830416 58.4341413374
+/gps/hist/point 0.184784979742 54.1169526546
+/gps/hist/point 0.199526231497 50.1187233627
+/gps/hist/point 0.215443469003 46.4158883361
+/gps/hist/point 0.232630506715 42.9866234708
+/gps/hist/point 0.251188643151 39.8107170553
+/gps/hist/point 0.271227257933 36.8694506452
+/gps/hist/point 0.292864456463 34.1454887383
+/gps/hist/point 0.316227766017 31.6227766017
+/gps/hist/point 0.341454887383 29.2864456463
+/gps/hist/point 0.368694506452 27.1227257933
+/gps/hist/point 0.398107170553 25.1188643151
+/gps/hist/point 0.429866234708 23.2630506715
+/gps/hist/point 0.464158883361 21.5443469003
+/gps/hist/point 0.501187233627 19.9526231497
+/gps/hist/point 0.541169526546 18.4784979742
+/gps/hist/point 0.584341413374 17.1132830416
+/gps/hist/point 0.63095734448 15.8489319246
+/gps/hist/point 0.681292069058 14.6779926762
+/gps/hist/point 0.73564225446 13.5935639088
+/gps/hist/point 0.794328234724 12.5892541179
+/gps/hist/point 0.857695898591 11.6591440118
+/gps/hist/point 0.926118728129 10.7977516233
+/gps/hist/point 1.0 10.0
+/gps/hist/point 1.07977516233 9.26118728129
+/gps/hist/point 1.16591440118 8.57695898591
+/gps/hist/point 1.25892541179 7.94328234724
+/gps/hist/point 1.35935639088 7.3564225446
+/gps/hist/point 1.46779926762 6.81292069058
+/gps/hist/point 1.58489319246 6.3095734448
+/gps/hist/point 1.71132830416 5.84341413374
+/gps/hist/point 1.84784979742 5.41169526546
+/gps/hist/point 1.99526231497 5.01187233627
+/gps/hist/point 2.15443469003 4.64158883361
+/gps/hist/point 2.32630506715 4.29866234708
+/gps/hist/point 2.51188643151 3.98107170553
+/gps/hist/point 2.71227257933 3.68694506452
+/gps/hist/point 2.92864456463 3.41454887383
+/gps/hist/point 3.16227766017 3.16227766017
+/gps/hist/point 3.41454887383 2.92864456463
+/gps/hist/point 3.68694506452 2.71227257933
+/gps/hist/point 3.98107170553 2.51188643151
+/gps/hist/point 4.29866234708 2.32630506715
+/gps/hist/point 4.64158883361 2.15443469003
+/gps/hist/point 5.01187233627 1.99526231497
+/gps/hist/point 5.41169526546 1.84784979742
+/gps/hist/point 5.84341413374 1.71132830416
+/gps/hist/point 6.3095734448 1.58489319246
+/gps/hist/point 6.81292069058 1.46779926762
+/gps/hist/point 7.3564225446 1.35935639088
+/gps/hist/point 7.94328234724 1.25892541179
+/gps/hist/point 8.57695898591 1.16591440118
+/gps/hist/point 9.26118728129 1.07977516233
+/gps/hist/inter Log
+
+#########################
+# Run particles
+#
+/run/beamOn {N_R}

@@ -1,7 +1,10 @@
 ##########################
 # Set the aliases for the rest of the macro file
+/control/alias Emin 1
+/control/alias Emax 1000
+/control/alias Ezero 0.01
 /control/alias R 20
-/control/alias N_R 200000000
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################
@@ -13,19 +16,17 @@
 ##########################
 # Multi-threading mode
 #
-/run/numberOfThreads 1
+/run/numberOfThreads 8
 
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 100 eV
+/cuts/setLowEdge 990 eV
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName Co60_Nr_{N_R}_R_{R}_ISO
-
-#/tracking/verbose 1
+/analysis/setFileName electron_Exp_{Emin}_{Emax}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -47,11 +48,14 @@
 /gps/ang/maxtheta    9.000E+01 deg
 
 #########################
-# Set ion type and kinetic energy
+# Set particle type, energy, and distribution
 #
-/gps/particle ion
-/gps/ion 27 60 0 0
-/gps/energy 0 keV
+/gps/particle e-
+
+/gps/ene/type Exp
+/gps/ene/min {Emin} keV
+/gps/ene/max {Emax} keV
+/gps/ene/ezero {Ezero}
 
 #########################
 # Run particles

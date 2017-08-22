@@ -2,6 +2,7 @@
 #include "PrimaryGeneratorAction.hh"
 #include "G4Event.hh"
 #include "G4Run.hh"
+#include "G4Track.hh"
 #include "G4SDManager.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4THitsMap.hh"
@@ -45,7 +46,7 @@ void Run::RecordEvent(const G4Event* event)
 	
 	std::map<G4int,G4double*>::iterator itr;
 	
-	// Get the total energy deposited for this event in the TEPC
+	// Get the total energy deposited for this event
 	for (itr = event_eDep->GetMap()->begin(); itr != event_eDep->GetMap()->end(); itr++) {
 		eDep += *(itr->second);
 	}

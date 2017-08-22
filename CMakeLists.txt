@@ -45,6 +45,9 @@ set(G4SIDETECTOR_SCRIPTS
   runElectronISO.mac
   runElectronISO_loop.mac
   runMonoElectronISO.mac
+  runUniElectronISO.mac
+  runExpElectronISO.mac
+  runBremElectronISO.mac
   runSr90ISO.mac
   runCs137ISO.mac
   runCs135ISO.mac
