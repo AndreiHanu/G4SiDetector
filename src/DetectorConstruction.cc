@@ -80,7 +80,7 @@
 #include "G4PSEnergyDeposit.hh"
 #include "G4PSTrackLength.hh"
 #include "G4PSPassageTrackLength.hh"
-#include "G4PSPassageCellCurrent.hh"
+#include "G4PSSphereSurfaceCurrent.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -224,7 +224,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// Note: The actual radius of the Source solid will be slightly smaller (0.1 mm) than
 	// specified in the macro files in order to allow tracking the incident kinetic energy
 	// of particles.
-	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., (sourceRadius - 0.1*mm)/2, 0., 360.0*degree, 0., 180.0*degree);
+	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", (sourceRadius - 0.1*mm)/2, (sourceRadius + 0.1*mm)/2, 0., 360.0*degree, 0., 180.0*degree);
 
 	SourceLogical = 
 		new G4LogicalVolume(SourceSolid,						// The Solid
@@ -270,7 +270,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 		new G4PVPlacement(	G4Transform3D(Housing_Rot,Housing_Trans),	// Translation
 							HousingLogical,					// Logical volume
 							"Housing_Physical",		        // Name
-							SourceLogical,					// Mother volume
+							WorldLogical,					// Mother volume
 							false,							// Unused boolean parameter
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
@@ -524,6 +524,16 @@ void DetectorConstruction::ConstructSDandField()
  	
  	G4PSEnergyDeposit* eDep = new G4PSEnergyDeposit("eDep");
     SiScorer->RegisterPrimitive(eDep);
+
+	/*
+	G4MultiFunctionalDetector* MFDSourceScorer = new G4MultiFunctionalDetector("MFDSource");
+	G4SDManager::GetSDMpointer()->AddNewDetector(MFDSourceScorer);	
+	G4SDManager::GetSDMpointer()->SetVerboseLevel(0);
+	SourceLogical->SetSensitiveDetector(MFDSourceScorer);
+
+	G4PSSphereSurfaceCurrent* psCurrent = new G4PSSphereSurfaceCurrent("psCurrent", fCurrent_Out);
+    MFDSourceScorer->RegisterPrimitive(psCurrent);
+	*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

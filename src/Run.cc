@@ -50,17 +50,16 @@ void Run::RecordEvent(const G4Event* event)
 	for (itr = event_eDep->GetMap()->begin(); itr != event_eDep->GetMap()->end(); itr++) {
 		eDep += *(itr->second);
 	}
-	
+
 	// Record events with non-zero deposited energy
 	if (eDep > 0) {
-
 		// Get analysis manager
-  		G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  		
-  		// Fill ntuple
+		G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+			
+		// Fill ntuple
 		analysisManager->FillNtupleDColumn(0, particleGun->GetGPS()->GetParticleEnergy()/eV);
-  		analysisManager->FillNtupleDColumn(1, eDep/eV);
-  		analysisManager->AddNtupleRow();
+		analysisManager->FillNtupleDColumn(1, eDep/eV);
+		analysisManager->AddNtupleRow();
 	}
 	
 	// Invoke base class method
