@@ -39,12 +39,10 @@ target_link_libraries(G4SiDetector ${Geant4_LIBRARIES})
 
 set(G4SIDETECTOR_SCRIPTS
   vis.mac
-  runGammaISO.mac
-  runGammaISO_loop.mac
-  runMonoGammaISO.mac
   runElectronUniformISO.mac
   runElectronMonoenergeticISO.mac
   runElectronExponentialISO.mac
+  runGammaUniformISO.mac
   runSr90ISO.mac
   runCs137ISO.mac
   runCs135ISO.mac
