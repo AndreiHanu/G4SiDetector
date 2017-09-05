@@ -51,15 +51,23 @@ void Run::RecordEvent(const G4Event* event)
 		eDep += *(itr->second);
 	}
 
+	// Get analysis manager
+	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+	// Record the true energy for all of the emitted source events in order to calculate the 
+	// geometric factor (i.e. efficiency)
+	analysisManager->FillH1(analysisManager->GetH1Id("SourceTrueEnergy"), particleGun->GetGPS()->GetParticleEnergy()/keV);
+
 	// Record events with non-zero deposited energy
 	if (eDep > 0) {
-		// Get analysis manager
-		G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+		analysisManager->FillH1(analysisManager->GetH1Id("DetectorTrueEnergy"), particleGun->GetGPS()->GetParticleEnergy()/keV);
+		analysisManager->FillH1(analysisManager->GetH1Id("DetectorMeasuredEnergy"), eDep/keV);
+		analysisManager->FillH2(analysisManager->GetH2Id("EnergyMigrationMatrix"), eDep/keV, particleGun->GetGPS()->GetParticleEnergy()/keV);
 			
 		// Fill ntuple
-		analysisManager->FillNtupleDColumn(0, particleGun->GetGPS()->GetParticleEnergy()/eV);
-		analysisManager->FillNtupleDColumn(1, eDep/eV);
-		analysisManager->AddNtupleRow();
+		//analysisManager->FillNtupleDColumn(0, particleGun->GetGPS()->GetParticleEnergy()/eV);
+		//analysisManager->FillNtupleDColumn(1, eDep/eV);
+		//analysisManager->AddNtupleRow();
 	}
 	
 	// Invoke base class method

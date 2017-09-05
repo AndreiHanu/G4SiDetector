@@ -53,7 +53,7 @@
 /gps/particle e-
 /gps/ene/type Arb
 /gps/hist/type arb
-/gps/hist/point 0.001 0.0
+/gps/hist/point 0.001 9999.0
 /gps/hist/point 0.00107977516233 9260.26116256
 /gps/hist/point 0.00116591440118 8576.10129001
 /gps/hist/point 0.00125892541179 7942.48801901

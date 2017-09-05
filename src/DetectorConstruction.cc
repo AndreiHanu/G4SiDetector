@@ -524,7 +524,6 @@ void DetectorConstruction::ConstructSDandField()
  	
  	G4PSEnergyDeposit* eDep = new G4PSEnergyDeposit("eDep");
     SiScorer->RegisterPrimitive(eDep);
-
 	/*
 	G4MultiFunctionalDetector* MFDSourceScorer = new G4MultiFunctionalDetector("MFDSource");
 	G4SDManager::GetSDMpointer()->AddNewDetector(MFDSourceScorer);	

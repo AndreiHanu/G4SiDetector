@@ -20,7 +20,7 @@ RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* primary)
 detector(det), particleGun(primary)
 {
 	// Set printing event number per each event
-  	G4RunManager::GetRunManager()->SetPrintProgress(1E5);  
+  	G4RunManager::GetRunManager()->SetPrintProgress(1E6);  
   	
 	// Set starting seed for the Random Number Generator
 	long seeds[2];
@@ -40,12 +40,36 @@ detector(det), particleGun(primary)
 
 	// Merge the ntuples from all of the worker threads
 	analysisManager->SetNtupleMerging(true);
+
+	// Create histograms
+	G4double ELow = 1.;
+    G4double EHigh = 10000.;
+    G4int nBins = 120;
+
+    G4double dlog = (std::log10(EHigh) - std::log10(ELow))/nBins;
+    G4double dx = std::pow(10, dlog);
+    G4double binValue = ELow;
+
+	std::vector<G4double> Edges;
+
+    // Set Bin Edges for Logarithmically Binned Histogram
+    while ( G4int(Edges.size()) <= nBins ) {
+        Edges.push_back(binValue);
+        binValue *= dx;
+	} 
+
+	analysisManager->CreateH1("SourceTrueEnergy", "Source True Energy Spectrum", Edges, "keV", "True Energy");
+	analysisManager->CreateH1("DetectorTrueEnergy", "Detector True Energy Spectrum", Edges, "keV", "True Energy");
+	analysisManager->CreateH1("DetectorMeasuredEnergy", "Detector Measured Energy Spectrum", Edges, "keV", "Measured Energy");
+	analysisManager->CreateH2("EnergyMigrationMatrix", "EnergyMigrationMatrix", Edges, Edges, "keV", "keV", "Measured Energy", "True Energy");
   	
   	// Create ntuple
+	/*
  	analysisManager->CreateNtuple("G4SiDetector", "Etrue Edep");
 	analysisManager->CreateNtupleDColumn("eTrue");
  	analysisManager->CreateNtupleDColumn("eDep");
  	analysisManager->FinishNtuple();
+	*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -3,7 +3,7 @@
 /control/alias Emean 500
 /control/alias Esigma 200
 /control/alias R 20
-/control/alias N_R 2000000000
+/control/alias N_R 20000000
 /control/listAlias
 
 #########################
@@ -25,7 +25,7 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_{Emean}_keV_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName electron_Gauss_{Emean}_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
