@@ -1,5 +1,6 @@
 #include "Run.hh"
 #include "PrimaryGeneratorAction.hh"
+#include "DetectorConstruction.hh"
 #include "G4Event.hh"
 #include "G4Run.hh"
 #include "G4Track.hh"
@@ -13,7 +14,8 @@
 #include "Analysis.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-Run::Run(PrimaryGeneratorAction* primary):G4Run(), particleGun(primary)
+Run::Run(DetectorConstruction* det, PrimaryGeneratorAction* primary):G4Run(),
+detector(det), particleGun(primary)
 {
 	G4SDManager* SDMan = G4SDManager::GetSDMpointer(); 
     	
@@ -54,9 +56,10 @@ void Run::RecordEvent(const G4Event* event)
 	// Get analysis manager
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-	// Record the true energy for all of the emitted source events in order to calculate the 
-	// geometric factor (i.e. efficiency)
-	analysisManager->FillH1(analysisManager->GetH1Id("SourceTrueEnergy"), particleGun->GetGPS()->GetParticleEnergy()/keV);
+	// Record the fluence (Units: cm^2 steradians) from all of the emitted source events
+	analysisManager->FillH1(analysisManager->GetH1Id("SourceFluence"), 
+							particleGun->GetGPS()->GetParticleEnergy()/keV, 
+							1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
 
 	// Record events with non-zero deposited energy
 	if (eDep > 0) {

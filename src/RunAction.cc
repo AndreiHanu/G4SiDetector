@@ -58,7 +58,7 @@ detector(det), particleGun(primary)
         binValue *= dx;
 	} 
 
-	analysisManager->CreateH1("SourceTrueEnergy", "Source True Energy Spectrum", Edges);
+	analysisManager->CreateH1("SourceFluence", "Source Fluence Spectrum (cm2sr)", Edges);
 	analysisManager->CreateH1("DetectorTrueEnergy", "Detector True Energy Spectrum", Edges);
 	analysisManager->CreateH1("DetectorMeasuredEnergy", "Detector Measured Energy Spectrum", Edges);
 	analysisManager->CreateH2("EnergyMigrationMatrix", "Energy Migration Matrix", Edges, Edges);
@@ -84,7 +84,7 @@ RunAction::~RunAction()
 
 G4Run* RunAction::GenerateRun()
 { 
-	return new Run(particleGun); 
+	return new Run(detector, particleGun); 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
