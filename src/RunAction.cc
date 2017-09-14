@@ -44,7 +44,7 @@ detector(det), particleGun(primary)
 	// Create histograms
 	G4double ELow = 10.;
     G4double EHigh = 10000.;
-    G4int nBins = 120;
+    G4int nBins = 90;
 
     G4double dlog = (std::log10(EHigh) - std::log10(ELow))/nBins;
     G4double dx = std::pow(10, dlog);
