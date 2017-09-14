@@ -1,8 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Emin 1
-/control/alias Emax 1000
-/control/alias Ezero 0.01
+/control/alias Ezero 0.001
+/control/multiply Ezero_keV {Ezero} 1000
 /control/alias R 20
 /control/alias N_R 2000000000
 /control/listAlias
@@ -26,7 +25,7 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_Exp_{Emin}_{Emax}_keV_R_{R}_cm_Nr_{N_R}_ISO
+#/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -53,11 +52,86 @@
 /gps/particle e-
 
 /gps/ene/type Exp
-/gps/ene/min {Emin} keV
-/gps/ene/max {Emax} keV
 /gps/ene/ezero {Ezero}
 
 #########################
 # Run particles
 #
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_1
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_2
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_3
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_4
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_5
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_6
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_7
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_8
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_9
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_10
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_11
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_12
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_13
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_14
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_15
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_16
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_17
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_18
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_19
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_20
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_21
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_22
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_23
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_24
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_25
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_26
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_27
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_28
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_29
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_30
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_31
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_32
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_33
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_34
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_35
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_36
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_37
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_38
+/run/beamOn {N_R}
+/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO_39
 /run/beamOn {N_R}

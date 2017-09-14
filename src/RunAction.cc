@@ -42,7 +42,7 @@ detector(det), particleGun(primary)
 	analysisManager->SetNtupleMerging(true);
 
 	// Create histograms
-	G4double ELow = 1.;
+	G4double ELow = 10.;
     G4double EHigh = 10000.;
     G4int nBins = 120;
 
@@ -58,10 +58,10 @@ detector(det), particleGun(primary)
         binValue *= dx;
 	} 
 
-	analysisManager->CreateH1("SourceTrueEnergy", "Source True Energy Spectrum", Edges, "keV", "True Energy");
-	analysisManager->CreateH1("DetectorTrueEnergy", "Detector True Energy Spectrum", Edges, "keV", "True Energy");
-	analysisManager->CreateH1("DetectorMeasuredEnergy", "Detector Measured Energy Spectrum", Edges, "keV", "Measured Energy");
-	analysisManager->CreateH2("EnergyMigrationMatrix", "EnergyMigrationMatrix", Edges, Edges, "keV", "keV", "Measured Energy", "True Energy");
+	analysisManager->CreateH1("SourceTrueEnergy", "Source True Energy Spectrum", Edges);
+	analysisManager->CreateH1("DetectorTrueEnergy", "Detector True Energy Spectrum", Edges);
+	analysisManager->CreateH1("DetectorMeasuredEnergy", "Detector Measured Energy Spectrum", Edges);
+	analysisManager->CreateH2("EnergyMigrationMatrix", "Energy Migration Matrix", Edges, Edges);
   	
   	// Create ntuple
 	/*
