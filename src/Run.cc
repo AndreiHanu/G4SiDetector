@@ -56,7 +56,7 @@ void Run::RecordEvent(const G4Event* event)
 	// Get analysis manager
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-	// Record the fluence (Units: cm^2 steradians) from all of the emitted source events
+	// Record the fluence (Units: 1/(cm^2 sr)) from all of the emitted source events
 	analysisManager->FillH1(analysisManager->GetH1Id("SourceFluence"), 
 							particleGun->GetGPS()->GetParticleEnergy()/keV, 
 							1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));

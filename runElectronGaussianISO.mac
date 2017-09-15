@@ -1,9 +1,9 @@
 ##########################
 # Set the aliases for the rest of the macro file
 /control/alias Emean 500
-/control/alias Esigma 200
-/control/alias R 20
-/control/alias N_R 100000000
+/control/alias Esigma 100
+/control/alias R 10
+/control/alias N_R 1000000000
 /control/listAlias
 
 #########################
