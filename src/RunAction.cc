@@ -58,10 +58,11 @@ detector(det), particleGun(primary)
         binValue *= dx;
 	} 
 
-	analysisManager->CreateH1("SourceFluence", "Source Fluence Spectrum (cm2sr)", Edges);
-	analysisManager->CreateH1("DetectorTrueEnergy", "Detector True Energy Spectrum", Edges);
-	analysisManager->CreateH1("DetectorMeasuredEnergy", "Detector Measured Energy Spectrum", Edges);
-	analysisManager->CreateH2("EnergyMigrationMatrix", "Energy Migration Matrix", Edges, Edges);
+	analysisManager->CreateH1("Source Fluence (Gamma)", "Source Fluence Spectrum for Gammas", Edges);
+	analysisManager->CreateH1("Source Fluence (Electron)", "Source Fluence Spectrum for Electrons", Edges);
+	analysisManager->CreateH1("Detector Measured Spectrum", "Detector Measured Energy Spectrum", Edges);
+	analysisManager->CreateH2("Energy Migration Matrix (Gamma)", "Energy Migration Matrix for Gammas", Edges, Edges);
+	analysisManager->CreateH2("Energy Migration Matrix (Electron)", "Energy Migration Matrix for Electrons", Edges, Edges);
   	
   	// Create ntuple
 	/*

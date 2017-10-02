@@ -24,6 +24,8 @@ class Run : public G4Run
 		DetectorConstruction* detector;
 		PrimaryGeneratorAction* particleGun;
 		G4int ID_eDep;
+		G4int ID_kinEGamma;
+		G4int ID_kinEElectron;
 };
 
 #endif

@@ -13,7 +13,7 @@
 ##########################
 # Multi-threading mode
 #
-/run/numberOfThreads 1
+/run/numberOfThreads 8
 
 ##########################
 # Set of the physic models

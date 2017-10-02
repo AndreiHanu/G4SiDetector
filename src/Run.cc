@@ -20,6 +20,8 @@ detector(det), particleGun(primary)
 	G4SDManager* SDMan = G4SDManager::GetSDMpointer(); 
     	
     ID_eDep = SDMan->GetCollectionID("Si/eDep");
+	ID_kinEGamma = SDMan->GetCollectionID("Source/kinEGamma");
+	ID_kinEElectron = SDMan->GetCollectionID("Source/kinEElectron");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -42,9 +44,13 @@ void Run::RecordEvent(const G4Event* event)
   	
 	// Zero out the variables
 	G4double eDep = 0.;
+	G4double kinEGamma = 0.;
+	G4double kinEElectron = 0.;
 	
 	// Get the HitMaps for this event
 	G4THitsMap<G4double>* event_eDep = (G4THitsMap<G4double>*)(HCE->GetHC(ID_eDep));
+	G4THitsMap<G4double>* event_kinEGamma = (G4THitsMap<G4double>*)(HCE->GetHC(ID_kinEGamma));
+	G4THitsMap<G4double>* event_kinEElectron = (G4THitsMap<G4double>*)(HCE->GetHC(ID_kinEElectron));
 	
 	std::map<G4int,G4double*>::iterator itr;
 	
@@ -53,24 +59,42 @@ void Run::RecordEvent(const G4Event* event)
 		eDep += *(itr->second);
 	}
 
+	// Get the incident kinetic energy for gammas in this event
+	for (itr = event_kinEGamma->GetMap()->begin(); itr != event_kinEGamma->GetMap()->end(); itr++) {
+		kinEGamma += *(itr->second);
+	}
+
+	// Get the incident kinetic energy for electrons in this event
+	for (itr = event_kinEElectron->GetMap()->begin(); itr != event_kinEElectron->GetMap()->end(); itr++) {
+		kinEElectron += *(itr->second);
+	}
+
 	// Get analysis manager
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-	// Record the fluence (Units: 1/(cm^2 sr)) from all of the emitted source events
-	analysisManager->FillH1(analysisManager->GetH1Id("SourceFluence"), 
-							particleGun->GetGPS()->GetParticleEnergy()/keV, 
-							1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
+	// Score the source fluence
+	if (kinEGamma > 0) {
+		analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Gamma)"), 
+								kinEGamma/keV, 
+								1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
+		if (eDep > 0) {
+			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Gamma)"), eDep/keV, kinEGamma/keV);
+		}
+	}
+
+	if (kinEElectron > 0) {
+		analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Electron)"), 
+								kinEElectron/keV, 
+								1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
+
+		if (eDep > 0) {
+			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), eDep/keV, kinEElectron/keV);	
+		}
+	}
 
 	// Record events with non-zero deposited energy
 	if (eDep > 0) {
-		analysisManager->FillH1(analysisManager->GetH1Id("DetectorTrueEnergy"), particleGun->GetGPS()->GetParticleEnergy()/keV);
-		analysisManager->FillH1(analysisManager->GetH1Id("DetectorMeasuredEnergy"), eDep/keV);
-		analysisManager->FillH2(analysisManager->GetH2Id("EnergyMigrationMatrix"), eDep/keV, particleGun->GetGPS()->GetParticleEnergy()/keV);
-			
-		// Fill ntuple
-		//analysisManager->FillNtupleDColumn(0, particleGun->GetGPS()->GetParticleEnergy()/eV);
-		//analysisManager->FillNtupleDColumn(1, eDep/eV);
-		//analysisManager->AddNtupleRow();
+		analysisManager->FillH1(analysisManager->GetH1Id("Detector Measured Spectrum"), eDep/keV);
 	}
 	
 	// Invoke base class method

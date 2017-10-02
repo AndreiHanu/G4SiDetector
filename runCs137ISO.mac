@@ -1,7 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
 /control/alias R 20
-/control/alias N_R 2000000000
+/control/alias N_R 10000000
 /control/listAlias
 
 #########################
@@ -18,12 +18,12 @@
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 100 eV
+/cuts/setLowEdge 990 eV
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName Cs137_Nr_{N_R}_R_{R}_ISO
+/analysis/setFileName Cs137_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure

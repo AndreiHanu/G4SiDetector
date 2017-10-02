@@ -81,6 +81,8 @@
 #include "G4PSTrackLength.hh"
 #include "G4PSPassageTrackLength.hh"
 #include "G4PSSphereSurfaceCurrent.hh"
+#include "G4PSIncidentKineticEnergy.hh"
+#include "G4SDParticleFilter.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -224,7 +226,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// Note: The actual radius of the Source solid will be slightly smaller (0.1 mm) than
 	// specified in the macro files in order to allow tracking the incident kinetic energy
 	// of particles.
-	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", (sourceRadius - 0.1*mm)/2, (sourceRadius + 0.1*mm)/2, 0., 360.0*degree, 0., 180.0*degree);
+	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., sourceRadius/2, 0., 360.0*degree, 0., 180.0*degree);
 
 	SourceLogical = 
 		new G4LogicalVolume(SourceSolid,						// The Solid
@@ -270,7 +272,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 		new G4PVPlacement(	G4Transform3D(Housing_Rot,Housing_Trans),	// Translation
 							HousingLogical,					// Logical volume
 							"Housing_Physical",		        // Name
-							WorldLogical,					// Mother volume
+							SourceLogical,					// Mother volume
 							false,							// Unused boolean parameter
 							0,								// Copy number
 							fCheckOverlaps);				// Overlap Check
@@ -514,6 +516,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 void DetectorConstruction::ConstructSDandField()
 {
+	G4String filterName, particleName;
+  
+  	G4SDParticleFilter* gammaFilter = new G4SDParticleFilter(filterName="gammaFilter",particleName="gamma");
+  	G4SDParticleFilter* electronFilter = new G4SDParticleFilter(filterName="electronFilter",particleName="e-");
+	
 	////////////////////////////////////////////////////////////////////////
 	// Construct the Multi Functional Detector for the Si chip
 	
@@ -524,15 +531,19 @@ void DetectorConstruction::ConstructSDandField()
  	
  	G4PSEnergyDeposit* eDep = new G4PSEnergyDeposit("eDep");
     SiScorer->RegisterPrimitive(eDep);
-	/*
-	G4MultiFunctionalDetector* MFDSourceScorer = new G4MultiFunctionalDetector("MFDSource");
-	G4SDManager::GetSDMpointer()->AddNewDetector(MFDSourceScorer);	
+	
+	G4MultiFunctionalDetector* SourceScorer = new G4MultiFunctionalDetector("Source");
+	G4SDManager::GetSDMpointer()->AddNewDetector(SourceScorer);	
 	G4SDManager::GetSDMpointer()->SetVerboseLevel(0);
-	SourceLogical->SetSensitiveDetector(MFDSourceScorer);
+	SourceLogical->SetSensitiveDetector(SourceScorer);
 
-	G4PSSphereSurfaceCurrent* psCurrent = new G4PSSphereSurfaceCurrent("psCurrent", fCurrent_Out);
-    MFDSourceScorer->RegisterPrimitive(psCurrent);
-	*/
+	G4VPrimitiveScorer* kinEGamma = new G4PSIncidentKineticEnergy("kinEGamma");
+	kinEGamma->SetFilter(gammaFilter);
+    SourceScorer->RegisterPrimitive(kinEGamma);
+
+	G4VPrimitiveScorer* kinEElectron = new G4PSIncidentKineticEnergy("kinEElectron");
+	kinEElectron->SetFilter(electronFilter);
+    SourceScorer->RegisterPrimitive(kinEElectron);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
