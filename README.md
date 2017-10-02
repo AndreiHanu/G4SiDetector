@@ -32,16 +32,18 @@ To recompile, I typically just re-run the command in Step 3
 
 ## Scoring Physical Quantities
 Scoring of physical quantities is carried out through the G4MultiFunctionalDetector which allows multiple primitive scorers to be
-assigned to a single volume. In this simulation, a G4MultiFunctionalDetector is assigned to the sensitive volume of Silicon chip. The value recorded by the primitive scorers is collected on event-by-event basis enabling calculation of the detector response.
+assigned to a single volume. In this simulation, a G4MultiFunctionalDetector is assigned to the sensitive volume of Silicon chip and the source volume. The value recorded by the primitive scorers is collected on event-by-event basis enabling calculation of the detector response.
 
 The primitive scorer(s) registered for the sensitive volume of Si chip are:
 * G4PSEnergyDeposit
 
-During a run, the data collected on an event-by-event basis is histogrammed into four logarithmically binned ROOT histograms. 
+The primitive scorer(s) registered for the source volume are custom kinetic energy scorers:
+* G4PSIncidentKineticEnergy
 
-* The first histogram, labeled "SourceTrueEnergy", records the kinetic energy of the incident source particle. 
-* The second histogram, labeled "DetectorTrueEnergy", records the kinetic energy of incident particles with non-zero energy deposition in the detector. 
-* The third histogram, labeled "DetectorMeasuredEnergy", records the measured or deposited energy in the detector.
-* The fourth histogram, labeled "EnergyMigrationMatrix", records a 2D histogram of the true kinetic energy versus measured/deposited energy in the detector.
+During a run, the data collected on an event-by-event basis is histogrammed into five logarithmically binned ROOT histograms. 
 
-The first and second histograms, combined with the known source radius, can be used to calculate the geometric factor for the detector. The fourth histogram can be used by unfolding algorithms to convert the measured spectrum into a true spectrum and vice-versa.
+* The first histogram, labeled "Source Fluence (Gamma)", records fluence and kinetic energy of incident gamma-ray source particles.
+* The second histogram, labeled "Source Fluence (Electron)", records fluence and kinetic energy of incident electron source particles.
+* The third histogram, labeled "Detector Measured Spectrum", records the measured or deposited energy in the detector.
+* The fourth histogram, labeled "Energy Migration Matrix (Gamma)", records a 2D histogram of the true kinetic energy versus measured/deposited energy in the detector from gamma-rays.
+* The fifth histogram, labeled "Energy Migration Matrix (Electron)", records a 2D histogram of the true kinetic energy versus measured/deposited energy in the detector from electrons.
