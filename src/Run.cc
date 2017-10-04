@@ -73,19 +73,17 @@ void Run::RecordEvent(const G4Event* event)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
 	// Score the source fluence
+	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Gamma)"), kinEGamma/keV);
+	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Electron)"), kinEElectron/keV);
 	if (kinEGamma > 0) {
-		analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Gamma)"), 
-								kinEGamma/keV, 
-								1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
+		
 		if (eDep > 0) {
 			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Gamma)"), eDep/keV, kinEGamma/keV);
 		}
 	}
 
 	if (kinEElectron > 0) {
-		analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Electron)"), 
-								kinEElectron/keV, 
-								1/(4*std::pow(3.14159, 2)*std::pow(detector->GetSourceRadius()/cm, 2)));
+		
 
 		if (eDep > 0) {
 			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), eDep/keV, kinEElectron/keV);	

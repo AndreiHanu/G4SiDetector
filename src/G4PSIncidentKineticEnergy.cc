@@ -52,19 +52,29 @@ G4PSIncidentKineticEnergy::~G4PSIncidentKineticEnergy()
 
 G4bool G4PSIncidentKineticEnergy::ProcessHits(G4Step* aStep, G4TouchableHistory*)
 {
+    // The kinetic energy of a source particle will always be the largest
+    // kinetic energy ever recorded by this scorer. So instead of checking
+    // if the particle is a primary followed by checking for a volume boundary,
+    // it's better to compare the kinetic energies during each step.
+
     // Check if this is the primary particle
-    if ( aStep->GetTrack()->GetParentID() != 0) {
-        // It's a secondary particles, check if it came from decay
+    if ( aStep->GetTrack()->GetParentID() != 0 ) {
+        // It's a secondary particles, check if it came from radioactive decay
        if( aStep->GetTrack()->GetCreatorProcess()->GetProcessName() != "RadioactiveDecay") return FALSE;
     }
 
-	if (aStep->GetPreStepPoint()->GetStepStatus() == fGeomBoundary ){
-        // Add the kinetic energy to the event map
-        G4int index = GetIndex(aStep);
-        G4double kineticEnergy = aStep->GetPreStepPoint()->GetKineticEnergy();
-        EvtMap->add(index, kineticEnergy);
-        return TRUE;
-    } else {return FALSE;}
+    // Kinetic energy of this particle at the starting point.
+    G4double kineticEnergy = aStep->GetPreStepPoint()->GetKineticEnergy();
+
+    // Get the current stored value in the event map
+    G4int index = GetIndex(aStep);
+    G4double* mapValue = ((*EvtMap)[index]);
+
+    // If mapValue exits (e.g not NULL ), compare it with the current kinetic energy.
+    if ( mapValue && ( *mapValue > kineticEnergy ) ) return FALSE ;
+    else EvtMap->set(index, kineticEnergy);
+
+    return TRUE;
 }
 
 void G4PSIncidentKineticEnergy::Initialize(G4HCofThisEvent* HCE)

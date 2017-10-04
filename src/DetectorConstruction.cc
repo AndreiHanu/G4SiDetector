@@ -535,7 +535,7 @@ void DetectorConstruction::ConstructSDandField()
 	G4MultiFunctionalDetector* SourceScorer = new G4MultiFunctionalDetector("Source");
 	G4SDManager::GetSDMpointer()->AddNewDetector(SourceScorer);	
 	G4SDManager::GetSDMpointer()->SetVerboseLevel(0);
-	SourceLogical->SetSensitiveDetector(SourceScorer);
+	WorldLogical->SetSensitiveDetector(SourceScorer);
 
 	G4VPrimitiveScorer* kinEGamma = new G4PSIncidentKineticEnergy("kinEGamma");
 	kinEGamma->SetFilter(gammaFilter);
