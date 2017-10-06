@@ -72,9 +72,18 @@ void Run::RecordEvent(const G4Event* event)
 	// Get analysis manager
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
+	// Calculate the fluence for this event taking into account any angular biasing
+	G4double fluence = 1/(3.14159*std::pow(detector->GetSourceRadius()/cm, 2)*(std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()), 2)-std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()), 2)));
+
+	/*
+	G4cout << "MaxTheta: " << particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()/degree
+		   << " MinTheta: " << particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()/degree
+		   << " Fluence: " << fluence << G4endl;
+	*/
+
 	// Score the source fluence
-	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Gamma)"), kinEGamma/keV);
-	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Electron)"), kinEElectron/keV);
+	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Gamma)"), kinEGamma/keV, fluence);
+	analysisManager->FillH1(analysisManager->GetH1Id("Source Fluence (Electron)"), kinEElectron/keV, fluence);
 	if (kinEGamma > 0) {
 		
 		if (eDep > 0) {

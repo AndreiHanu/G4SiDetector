@@ -44,8 +44,8 @@
 # Use the cosine angular distribution
 #
 /gps/ang/type cos
-/gps/ang/mintheta    0.000E+00 deg
-/gps/ang/maxtheta    9.000E+01 deg
+/gps/ang/mintheta 0. deg
+/gps/ang/maxtheta 45. deg
 
 #########################
 # Set particle type and uniform energy distribution from a histogram

@@ -39,6 +39,7 @@ target_link_libraries(G4SiDetector ${Geant4_LIBRARIES})
 
 set(G4SIDETECTOR_SCRIPTS
   vis.mac
+  rotate.mac
   runElectronUniformISO.mac
   runElectronGaussianISO.mac
   runElectronExponentialISO.mac

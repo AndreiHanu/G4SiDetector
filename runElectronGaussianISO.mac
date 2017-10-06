@@ -3,7 +3,7 @@
 /control/alias Emean 100
 /control/alias Esigma 10
 /control/alias R 20
-/control/alias N_R 10000000
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################

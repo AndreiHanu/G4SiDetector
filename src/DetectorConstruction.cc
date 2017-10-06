@@ -458,7 +458,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   	WorldLogical->SetVisAttributes(Vis_World);
 
 	// Source Volume (Light Yellow)
-    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,.2));
+    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,0.));
     Vis_Source->SetForceWireframe(true);
     SourceLogical->SetVisAttributes(Vis_Source);
 
