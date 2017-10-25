@@ -1,9 +1,9 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Ezero 0.100
+/control/alias Ezero 0.5
 /control/multiply Ezero_keV {Ezero} 1000
-/control/alias R 10
-/control/alias N_R 100000000
+/control/alias R 100
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################

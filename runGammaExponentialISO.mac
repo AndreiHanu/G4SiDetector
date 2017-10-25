@@ -1,9 +1,9 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Emean 500
-/control/alias Esigma 50
-/control/alias R 10
-/control/alias N_R 200000000
+/control/alias Ezero 3.
+/control/multiply Ezero_keV {Ezero} 1000
+/control/alias R 30
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################
@@ -25,7 +25,7 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName electron_Gauss_{Emean}_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
+#/analysis/setFileName gamma_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -49,12 +49,13 @@
 #########################
 # Set particle type, energy, and distribution
 #
-/gps/particle e-
-/gps/ene/type Gauss
-/gps/ene/mono {Emean} keV
-/gps/ene/sigma {Esigma} keV
+/gps/particle gamma
+
+/gps/ene/type Exp
+/gps/ene/ezero {Ezero}
 
 #########################
 # Run particles
 #
+/analysis/setFileName gamma_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO
 /run/beamOn {N_R}

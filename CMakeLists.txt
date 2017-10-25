@@ -44,6 +44,7 @@ set(G4SIDETECTOR_SCRIPTS
   runElectronGaussianISO.mac
   runElectronExponentialISO.mac
   runGammaUniformISO.mac
+  runGammaExponentialISO.mac
   runCl36ISO.mac
   runSr90ISO.mac
   runCs137ISO.mac
