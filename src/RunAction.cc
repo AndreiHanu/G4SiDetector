@@ -58,11 +58,27 @@ detector(det), particleGun(primary)
         binValue *= dx;
 	} 
 
-	analysisManager->CreateH1("Source Fluence (Gamma)", "Source Fluence Spectrum for Gammas", Edges);
-	analysisManager->CreateH1("Source Fluence (Electron)", "Source Fluence Spectrum for Electrons", Edges);
-	analysisManager->CreateH1("Detector Measured Spectrum", "Detector Measured Energy Spectrum", Edges);
-	analysisManager->CreateH2("Energy Migration Matrix (Gamma)", "Energy Migration Matrix for Gammas", Edges, Edges);
-	analysisManager->CreateH2("Energy Migration Matrix (Electron)", "Energy Migration Matrix for Electrons", Edges, Edges);
+	G4int H_Source_Gamma = analysisManager->CreateH1("Source Spectrum (Gamma)", "Source Spectrum for Gammas", Edges);
+	analysisManager->SetH1XAxisTitle(H_Source_Gamma, "True Energy (keV)");
+	analysisManager->SetH1YAxisTitle(H_Source_Gamma, "# of Events");
+
+	G4int H_Source_Electron = analysisManager->CreateH1("Source Spectrum (Electron)", "Source Spectrum for Electrons", Edges);
+	analysisManager->SetH1XAxisTitle(H_Source_Electron, "True Energy (keV)");
+	analysisManager->SetH1YAxisTitle(H_Source_Electron, "# of Events");
+
+	G4int H_Measured = analysisManager->CreateH1("Detector Measured Spectrum", "Detector Measured Spectrum", Edges);
+	analysisManager->SetH1XAxisTitle(H_Measured, "Measured Energy (keV)");
+	analysisManager->SetH1YAxisTitle(H_Measured, "# of Events");
+
+	G4int H_Mig_Gamma = analysisManager->CreateH2("Energy Migration Matrix (Gamma)", "Energy Migration Matrix for Gammas", Edges, Edges);
+	analysisManager->SetH2XAxisTitle(H_Mig_Gamma, "True Energy (keV)");
+	analysisManager->SetH2YAxisTitle(H_Mig_Gamma, "Measured Energy (keV)");
+	analysisManager->SetH2ZAxisTitle(H_Mig_Gamma, "# of Events");
+
+	G4int H_Mig_Electron = analysisManager->CreateH2("Energy Migration Matrix (Electron)", "Energy Migration Matrix for Electrons", Edges, Edges);
+	analysisManager->SetH2XAxisTitle(H_Mig_Electron, "True Energy (keV)");
+	analysisManager->SetH2YAxisTitle(H_Mig_Electron, "Measured Energy (keV)");
+	analysisManager->SetH2ZAxisTitle(H_Mig_Electron, "# of Events");
   	
   	// Create ntuple
 	/*
