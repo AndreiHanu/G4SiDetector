@@ -1,9 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
-/control/alias Ezero 0.05
-/control/multiply Ezero_keV {Ezero} 1000
 /control/alias R 20
-/control/alias N_R 2000000000
+/control/alias N_R 20000000
 /control/listAlias
 
 #########################
@@ -25,7 +23,7 @@
 ##########################
 # Set name for the output file
 #
-#/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName I131_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -43,19 +41,17 @@
 ##########################################################################################
 # Use the cosine angular distribution
 /gps/ang/type cos
-/gps/ang/mintheta    0.000E+00 deg
-/gps/ang/maxtheta    9.000E+01 deg
+/gps/ang/mintheta 0. deg
+/gps/ang/maxtheta 90. deg
 
 #########################
-# Set particle type, energy, and distribution
+# Set ion type and kinetic energy
 #
-/gps/particle e-
-
-/gps/ene/type Exp
-/gps/ene/ezero {Ezero}
+/gps/particle ion
+/gps/ion 53 131 0 0
+/gps/energy 0 keV
 
 #########################
 # Run particles
 #
-/analysis/setFileName electron_Exp_{Ezero_keV}_keV_R_{R}_cm_Nr_{N_R}_ISO
 /run/beamOn {N_R}

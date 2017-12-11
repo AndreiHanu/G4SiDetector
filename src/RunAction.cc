@@ -64,11 +64,19 @@ detector(det), particleGun(primary)
 
 	G4int H_Source_Electron = analysisManager->CreateH1("Source Spectrum (Electron)", "Source Spectrum for Electrons", Edges);
 	analysisManager->SetH1XAxisTitle(H_Source_Electron, "True Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_Source_Electron, "# of Events");
+	analysisManager->SetH1YAxisTitle(H_Source_Electron, "Counts");
+
+	G4int H_True_Gamma = analysisManager->CreateH1("Detector True Spectrum (Gamma)", "Detector True Spectrum for Gammas", Edges);
+	analysisManager->SetH1XAxisTitle(H_True_Gamma, "True Energy (keV)");
+	analysisManager->SetH1YAxisTitle(H_True_Gamma, "Counts");
+	
+	G4int H_True_Electron = analysisManager->CreateH1("Detector True Spectrum (Electron)", "Detector True Spectrum for Electrons", Edges);
+	analysisManager->SetH1XAxisTitle(H_True_Electron, "True Energy (keV)");
+	analysisManager->SetH1YAxisTitle(H_True_Electron, "Counts");
 
 	G4int H_Measured = analysisManager->CreateH1("Detector Measured Spectrum", "Detector Measured Spectrum", Edges);
 	analysisManager->SetH1XAxisTitle(H_Measured, "Measured Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_Measured, "# of Events");
+	analysisManager->SetH1YAxisTitle(H_Measured, "Counts");
 
 	G4int H_Mig_Gamma = analysisManager->CreateH2("Energy Migration Matrix (Gamma)", "Energy Migration Matrix for Gammas", Edges, Edges);
 	analysisManager->SetH2XAxisTitle(H_Mig_Gamma, "True Energy (keV)");

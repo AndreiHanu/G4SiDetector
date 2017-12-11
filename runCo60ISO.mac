@@ -1,7 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
 /control/alias R 20
-/control/alias N_R 10000000
+/control/alias N_R 2000000000
 /control/listAlias
 
 #########################
@@ -18,14 +18,12 @@
 ##########################
 # Set of the physic models
 #
-/cuts/setLowEdge 100 eV
+/cuts/setLowEdge 900 eV
 
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName Co60_Nr_{N_R}_R_{R}_ISO
-
-#/tracking/verbose 1
+/analysis/setFileName Co60_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
@@ -43,8 +41,8 @@
 ##########################################################################################
 # Use the cosine angular distribution
 /gps/ang/type cos
-/gps/ang/mintheta    0.000E+00 deg
-/gps/ang/maxtheta    9.000E+01 deg
+/gps/ang/mintheta 0. deg
+/gps/ang/maxtheta 90. deg
 
 #########################
 # Set ion type and kinetic energy

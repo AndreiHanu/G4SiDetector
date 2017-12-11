@@ -44,12 +44,14 @@ set(G4SIDETECTOR_SCRIPTS
   runElectronGaussianISO.mac
   runElectronExponentialISO.mac
   runGammaUniformISO.mac
+  runGammaGaussianISO.mac
   runGammaExponentialISO.mac
   runCl36ISO.mac
-  runSr90ISO.mac
-  runCs137ISO.mac
-  runCs135ISO.mac
   runCo60ISO.mac
+  runSr90ISO.mac
+  runI131ISO.mac
+  runCs135ISO.mac
+  runCs137ISO.mac
 )
 
 foreach(_script ${G4SIDETECTOR_SCRIPTS})

@@ -88,10 +88,12 @@ void Run::RecordEvent(const G4Event* event)
 
 	// Score the energy migration matrices
 	if (kinEGamma > 0 && eDep > 0) {
+			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Gamma)"), kinEGamma/keV);
 			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Gamma)"), kinEGamma/keV, eDep/keV);
 	}
 
 	if (kinEElectron > 0 && eDep > 0) {
+			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Electron)"), kinEElectron/keV);
 			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), kinEElectron/keV, eDep/keV);
 	}
 

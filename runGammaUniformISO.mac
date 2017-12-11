@@ -1,9 +1,7 @@
 ##########################
 # Set the aliases for the rest of the macro file
-#
 /control/alias R 20
 /control/alias N_R 2000000000
-#/control/alias N_R 10000000
 /control/listAlias
 
 #########################
@@ -45,7 +43,7 @@
 #
 /gps/ang/type cos
 /gps/ang/mintheta 0. deg
-/gps/ang/maxtheta 45. deg
+/gps/ang/maxtheta 90. deg
 
 #########################
 # Set particle type and uniform energy distribution from a histogram
