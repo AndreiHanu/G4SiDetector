@@ -36,10 +36,9 @@ detector(det), particleGun(primary)
   	//G4cout << "Using " << analysisManager->GetType() << G4endl; 
   	
 	// Default settings 
-  	analysisManager->SetVerboseLevel(0); 
-
-	// Merge the ntuples from all of the worker threads
-	analysisManager->SetNtupleMerging(true);
+  	analysisManager->SetVerboseLevel(0);
+	analysisManager->SetActivation(true); 
+	analysisManager->SetNtupleMerging(true);	// Merge the ntuples from all of the worker threads
 
 	// Create histograms
 	G4double ELow = 10.;
@@ -60,33 +59,41 @@ detector(det), particleGun(primary)
 
 	G4int H_Source_Gamma = analysisManager->CreateH1("Source Spectrum (Gamma)", "Source Spectrum for Gammas", Edges);
 	analysisManager->SetH1XAxisTitle(H_Source_Gamma, "True Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_Source_Gamma, "# of Events");
+	analysisManager->SetH1YAxisTitle(H_Source_Gamma, "Fluence (cm^{-2})");
+	analysisManager->SetH1Activation(H_Source_Gamma, true);
+	
 
 	G4int H_Source_Electron = analysisManager->CreateH1("Source Spectrum (Electron)", "Source Spectrum for Electrons", Edges);
 	analysisManager->SetH1XAxisTitle(H_Source_Electron, "True Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_Source_Electron, "Counts");
+	analysisManager->SetH1YAxisTitle(H_Source_Electron, "Fluence (cm^{-2})");
+	analysisManager->SetH1Activation(H_Source_Electron, true);
 
 	G4int H_True_Gamma = analysisManager->CreateH1("Detector True Spectrum (Gamma)", "Detector True Spectrum for Gammas", Edges);
 	analysisManager->SetH1XAxisTitle(H_True_Gamma, "True Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_True_Gamma, "Counts");
+	analysisManager->SetH1YAxisTitle(H_True_Gamma, "# of Events");
+	analysisManager->SetH1Activation(H_True_Gamma, false);
 	
 	G4int H_True_Electron = analysisManager->CreateH1("Detector True Spectrum (Electron)", "Detector True Spectrum for Electrons", Edges);
 	analysisManager->SetH1XAxisTitle(H_True_Electron, "True Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_True_Electron, "Counts");
+	analysisManager->SetH1YAxisTitle(H_True_Electron, "# of Events");
+	analysisManager->SetH1Activation(H_True_Electron, false);
 
 	G4int H_Measured = analysisManager->CreateH1("Detector Measured Spectrum", "Detector Measured Spectrum", Edges);
 	analysisManager->SetH1XAxisTitle(H_Measured, "Measured Energy (keV)");
-	analysisManager->SetH1YAxisTitle(H_Measured, "Counts");
+	analysisManager->SetH1YAxisTitle(H_Measured, "# of Events");
+	analysisManager->SetH1Activation(H_Measured, true);
 
 	G4int H_Mig_Gamma = analysisManager->CreateH2("Energy Migration Matrix (Gamma)", "Energy Migration Matrix for Gammas", Edges, Edges);
 	analysisManager->SetH2XAxisTitle(H_Mig_Gamma, "True Energy (keV)");
 	analysisManager->SetH2YAxisTitle(H_Mig_Gamma, "Measured Energy (keV)");
 	analysisManager->SetH2ZAxisTitle(H_Mig_Gamma, "# of Events");
+	analysisManager->SetH2Activation(H_Mig_Gamma, false);
 
 	G4int H_Mig_Electron = analysisManager->CreateH2("Energy Migration Matrix (Electron)", "Energy Migration Matrix for Electrons", Edges, Edges);
 	analysisManager->SetH2XAxisTitle(H_Mig_Electron, "True Energy (keV)");
 	analysisManager->SetH2YAxisTitle(H_Mig_Electron, "Measured Energy (keV)");
 	analysisManager->SetH2ZAxisTitle(H_Mig_Electron, "# of Events");
+	analysisManager->SetH2Activation(H_Mig_Electron, false);
   	
   	// Create ntuple
 	/*

@@ -2,8 +2,8 @@
 # Set the aliases for the rest of the macro file
 /control/alias Emin 10
 /control/alias Emax 10000
-/control/alias alpha -1
-/control/multiply alpha_neg {alpha} -1.
+/control/alias alpha 3
+#/control/multiply alpha_neg {alpha} -1.
 /control/alias R 20
 /control/alias N_R 200000000
 /control/listAlias
@@ -55,7 +55,7 @@
 /gps/ene/type Pow
 /gps/ene/min {Emin} keV
 /gps/ene/max {Emax} keV
-/gps/ene/alpha {alpha_neg}
+/gps/ene/alpha {alpha}
 
 #########################
 # Run particles

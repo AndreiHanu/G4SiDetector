@@ -73,8 +73,8 @@ void Run::RecordEvent(const G4Event* event)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
 	// Calculate the fluence for this event taking into account any angular biasing
-	//G4double fluence = 1/(3.14159*std::pow(detector->GetSourceRadius()/cm, 2)*(std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()), 2)-std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()), 2)));
-	G4double fluence = 1.;
+	G4double fluence = 1/(3.14159*std::pow(detector->GetSourceRadius()/cm, 2)*(std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()), 2)-std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()), 2)));
+	//G4double fluence = 1.;
 
 	/*
 	G4cout << "MaxTheta: " << particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()/degree
@@ -82,19 +82,21 @@ void Run::RecordEvent(const G4Event* event)
 		   << " Fluence: " << fluence << G4endl;
 	*/
 
-	// Score the source spectrum
-	analysisManager->FillH1(analysisManager->GetH1Id("Source Spectrum (Gamma)"), kinEGamma/keV, fluence);
-	analysisManager->FillH1(analysisManager->GetH1Id("Source Spectrum (Electron)"), kinEElectron/keV, fluence);
-
-	// Score the energy migration matrices
-	if (kinEGamma > 0 && eDep > 0) {
+	// Score the source, true detected, and energy migration matrix
+	if (kinEGamma > 0){ 
+		analysisManager->FillH1(analysisManager->GetH1Id("Source Spectrum (Gamma)"), kinEGamma/keV, fluence);
+		if (eDep > 0){
 			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Gamma)"), kinEGamma/keV);
 			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Gamma)"), kinEGamma/keV, eDep/keV);
+		}
 	}
-
-	if (kinEElectron > 0 && eDep > 0) {
-			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Electron)"), kinEElectron/keV);
-			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), kinEElectron/keV, eDep/keV);
+	
+	if (kinEElectron > 0){
+		analysisManager->FillH1(analysisManager->GetH1Id("Source Spectrum (Electron)"), kinEElectron/keV, fluence);
+		if (eDep > 0){
+			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Electron)"), kinEGamma/keV);
+			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), kinEGamma/keV, eDep/keV);
+		}
 	}
 
 	// Record events with non-zero deposited energy

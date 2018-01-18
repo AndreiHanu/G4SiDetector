@@ -3,7 +3,8 @@
 /control/alias Emin 10
 /control/alias Emax 10000
 /control/alias alpha -3
-#/control/multiply alpha_neg {alpha} -1.
+/control/alias Emean 100
+/control/alias Esigma 100
 /control/alias R 20
 /control/alias N_R 200000000
 /control/listAlias
@@ -27,35 +28,45 @@
 ##########################
 # Set name for the output file
 #
-/analysis/setFileName gamma_Power_{Emin}_{Emax}_keV_alpha_{alpha}_R_{R}_cm_Nr_{N_R}_ISO
+/analysis/setFileName electron_Power_{Emin}_{Emax}_keV_alpha_{alpha}_gamma_Gauss_{Emean}_{Esigma}_keV_R_{R}_cm_Nr_{N_R}_ISO
 
 ##########################
 # Initialisation procedure
 #
 /run/initialize
 
-##########################################################################################
-# Model the particle source along the surface of a sphere surrounding the detector
-
-/gps/pos/type Surface
-/gps/pos/shape Sphere
-/gps/pos/centre 0. 0. 0. cm
-/gps/pos/radius {R} cm
-
-##########################################################################################
-# Use the cosine angular distribution
-/gps/ang/type cos
-/gps/ang/mintheta    0.000E+00 deg
-/gps/ang/maxtheta    9.000E+01 deg
-
-#########################
-# Set particle type, energy, and distribution
-#
-/gps/particle gamma
+##########################
+# Create the first particle.  This can be done using any of the GPS macro
+# commands. 
+/gps/source/intensity 1
+/gps/particle e-
 /gps/ene/type Pow
 /gps/ene/min {Emin} keV
 /gps/ene/max {Emax} keV
 /gps/ene/alpha {alpha}
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. cm
+/gps/pos/radius {R} cm
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+
+##########################
+# Create the second particle.  This can be done using any of the GPS macro
+# commands.  The position will be overridden below.
+/gps/source/add 1
+/gps/particle gamma
+/gps/ene/type Gauss
+/gps/ene/mono {Emean} keV
+/gps/ene/sigma {Esigma} keV
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 0. cm
+/gps/pos/radius {R} cm
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
 
 #########################
 # Run particles
