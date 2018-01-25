@@ -75,7 +75,7 @@ void Run::RecordEvent(const G4Event* event)
 	// Calculate the fluence for this event taking into account any angular biasing
 	G4double fluence = 1/(3.14159*std::pow(detector->GetSourceRadius()/cm, 2)*(std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()), 2)-std::pow(std::sin(particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()), 2)));
 	//G4double fluence = 1.;
-
+	
 	/*
 	G4cout << "MaxTheta: " << particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMaxTheta()/degree
 		   << " MinTheta: " << particleGun->GetGPS()->GetCurrentSource()->GetAngDist()->GetMinTheta()/degree
@@ -94,8 +94,8 @@ void Run::RecordEvent(const G4Event* event)
 	if (kinEElectron > 0){
 		analysisManager->FillH1(analysisManager->GetH1Id("Source Spectrum (Electron)"), kinEElectron/keV, fluence);
 		if (eDep > 0){
-			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Electron)"), kinEGamma/keV);
-			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), kinEGamma/keV, eDep/keV);
+			analysisManager->FillH1(analysisManager->GetH1Id("Detector True Spectrum (Electron)"), kinEElectron/keV);
+			analysisManager->FillH2(analysisManager->GetH2Id("Energy Migration Matrix (Electron)"), kinEElectron/keV, eDep/keV);
 		}
 	}
 
