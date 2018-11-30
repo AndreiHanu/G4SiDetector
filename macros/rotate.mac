@@ -1,0 +1,17 @@
+/vis/viewer/set/viewpointThetaPhi {theta} 0. deg
+/run/beamOn 2
+
+# set print size larger than screen
+/vis/ogl/set/printFilename G4SiDetector_{theta}_deg
+/vis/ogl/set/printMode pixmap
+
+# print
+/vis/ogl/printEPS
+
+# How to convert images to movie
+# convert -delay 20/360 G4SiDetector_{0..360}_deg_0000.eps G4SiDetectorMC.mp4
+
+# How to cover to a gif image
+# convert -delay 20/360 -loop 0 G4SiDetector_{0..360}_deg_0000.eps G4SiDetectorMC.gif
+
+/vis/viewer/flush

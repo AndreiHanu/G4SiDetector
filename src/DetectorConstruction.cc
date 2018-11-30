@@ -453,13 +453,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   	// Visualisation attributes
   	
   	// World Volume (White)
-  	G4VisAttributes* Vis_World = new G4VisAttributes(G4Colour(1.,1.,1.,0.1));
-  	Vis_World->SetForceWireframe(true);
-  	WorldLogical->SetVisAttributes(Vis_World);
-
+  	G4VisAttributes* Vis_World = new G4VisAttributes(G4Colour(0.,0.,0.,0.));
+  	Vis_World->SetForceWireframe(false);
+  	//WorldLogical->SetVisAttributes(Vis_World);
+	WorldLogical->SetVisAttributes(G4VisAttributes::GetInvisible());
+	  
 	// Source Volume (Light Yellow)
-    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,0.));
-    Vis_Source->SetForceWireframe(true);
+    G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,0.1));
+    Vis_Source->SetForceWireframe(false);
     SourceLogical->SetVisAttributes(Vis_Source);
 
     // Housing Volume (Gray)
