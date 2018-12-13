@@ -460,7 +460,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	  
 	// Source Volume (Light Yellow)
     G4VisAttributes* Vis_Source = new G4VisAttributes(G4Colour(1.,1.,1.,0.1));
-    Vis_Source->SetForceWireframe(false);
+    Vis_Source->SetForceWireframe(true);
     SourceLogical->SetVisAttributes(Vis_Source);
 
     // Housing Volume (Gray)

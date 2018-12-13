@@ -40,6 +40,7 @@ target_link_libraries(G4SiDetector ${Geant4_LIBRARIES})
 set(G4SIDETECTOR_SCRIPTS
   macros/vis.mac
   macros/rotate.mac
+  macros/runCl36ISO.mac
   macros/runSr90Y90ISO.mac
 )
 
