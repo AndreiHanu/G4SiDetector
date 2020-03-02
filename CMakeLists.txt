@@ -41,7 +41,13 @@ set(G4SIDETECTOR_SCRIPTS
   macros/vis.mac
   macros/rotate.mac
   macros/runCl36ISO.mac
+  macros/runKr85ISO.mac
   macros/runSr90Y90ISO.mac
+  macros/runCs137ISO.mac
+  macros/runElectronPowerISO.mac
+  macros/runGammaPowerElectronGaussianISO.mac
+  macros/runElectronUniformLogISO.mac
+  macros/runGammaUniformLogISO.mac
 )
 
 foreach(_script ${G4SIDETECTOR_SCRIPTS})

@@ -137,7 +137,7 @@ WorldPhysical(0)
 	rotX = 0.0*deg;		
 
 	// Source Radius
-	sourceRadius = 20.*cm;
+	sourceRadius = 25.*cm;
 			 
 	// Define Materials
 	DefineMaterials();
@@ -200,7 +200,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	////////////////////////////////////////////////////////////////////////
 	// Construct The World Volume
 
-	G4double world_X = 2*(sourceRadius + 1.*cm);
+	G4double world_X = 2.5*(sourceRadius + 1.*cm);
 	G4double world_Y = world_X;
 	G4double world_Z = world_X;
 	
@@ -226,12 +226,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 	// Note: The actual radius of the Source solid will be slightly smaller (0.1 mm) than
 	// specified in the macro files in order to allow tracking the incident kinetic energy
 	// of particles.
-	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., sourceRadius/2, 0., 360.0*degree, 0., 180.0*degree);
+	G4VSolid* SourceSolid = new G4Sphere("SourceSolid", 0., sourceRadius/4, 0., 360.0*degree, 0., 180.0*degree);
 
 	SourceLogical = 
-		new G4LogicalVolume(SourceSolid,						// The Solid
-							fMatWorld,		    				// Material
-							"SourceLogical");	     			// Name
+		new G4LogicalVolume(SourceSolid,					// The Solid
+							fMatWorld,		    			// Material
+							"SourceLogical");	     		// Name
 
 	SourcePhysical = 
 		new G4PVPlacement(	0,								// No Rotation
